@@ -60,3 +60,13 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Resource files
+media/events/*
+media/resources/*
+
+# IDEs
+.idea/*
+
+# Settings files (create them based on the templates)
+itc_005/settings.py
