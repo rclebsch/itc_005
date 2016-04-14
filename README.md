@@ -20,6 +20,7 @@ apt-get install libmysqlclient-dev
 apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
 apt-get install python3-pip
 echo "alias python=/usr/bin/python3" >> ~/.bash_aliases
+source ~/.bash_aliases
 pip3 install --user mysqlclient
 pip3 install django
 pip3 install django-import-export
