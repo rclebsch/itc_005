@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head id="ctl00_Head1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+    <meta name="HandheldFriendly" content="true"/>
+    <meta charset="utf-8"/>
+    <link rel="shortcut icon" href="{% static 'app/images/favicon.ico' %}" type="image/vnd.microsoft.icon"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/screen.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/itc-screen.css' %}" />
+
+    <meta name="Keywords"
+          content="International Trade Centre, ITC, WTO, World Trade Organization, small and medium-sized enterprises, e-commerce,
+          e-trade, export, import, LDCs, developing countries, economies in transition, trade development, WTO, SME, competitiveness,
+          promotion, information, packaging, purchasing, business, markets, benchmarking, statistics, commodities,
+          multilateral trading system, services exporting, training, supply management"/>
+    <title>
+        The EAC Project
+    </title>
+</head>
+<body>
+<div>
+    {% include "app/header-top-desktop.html" %}
+    {% include "app/header-mid.html"%}
+    <section class="wrapper clearfix">
+        <div class="row clearfix">
+            <div class="page-top-hld clearfix">
+                <div class="col-md-2"></div>
+                <div class="col-md-7">
+                    <h1 style="margin-left:0; margin-right:0;" class="column-heading">[The active menu item]</h1>
+                </div>
+                {% include "app/header-share.html"%}
+            </div>
+            <div class="col-md-2 ipad-left-menu">
+                {% include "app/left-menu.html"%}
+            </div>
+            <div class="ipad-mid-cont">
+                <div class="col-md-7">
+                    <div class="main-content itc-event marb20 dzHolderCC">
+                        {% include "app/content.html"%}
+                    </div>
+                </div>
+                <div class="col-md-3 no-print-section">
+                    {% include "app/events.html"%}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-hld">
+        {% include "app/footer.html"%}
+    </footer>
+</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 ﻿from django.http import HttpResponse
 from django.shortcuts import render
+from django.template import loader
 from django.core import serializers
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
@@ -21,7 +22,5 @@ class SessionData():
 
 
 def index(request):
-    return render(request, 'app/index.html')
-
-
+    return render(request, 'app/main.html')
 
