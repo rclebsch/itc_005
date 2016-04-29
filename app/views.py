@@ -1,18 +1,17 @@
 ﻿from django.http import HttpResponse
 from django.shortcuts import render
-from django.template import loader
-from django.core import serializers
-from django.utils import timezone
 from django.views.decorators.http import require_http_methods
+from django.core.exceptions import ValidationError
 
-from datetime import datetime, date
 import json
+import re
+import csv
 
-import itc_005.settings
-from app.models import Contact, ContactCategory, Country, Event, Language, Resource, ResourceCategory
+from app.models import Contact, ContactCategory, ContactActivity, ContactAfiliation, ContactStatus,\
+    Country, Border, Language, Resource, ResourceCategory, Event
 
 
-class SessionData():
+class SessionData:
     session = None
 
     # def __init__(self, session):
@@ -21,6 +20,259 @@ class SessionData():
         self.session = session
 
 
+def simplify_data(data, fields):
+    results = []
+    for item in data:
+        element = {'id': item.pk}
+        for field in fields:
+            if field.startswith('url__'):
+                if getattr(item, field[5:]):
+                    element[field[5:]] = getattr(item, field[5:]).url
+                else:
+                    element[field[5:]] = ''
+            elif field.startswith('fk__'):
+                m = re.search('fk__([a-zA-Z0-9]*)(__([a-zA-Z0-9]*))?', field)
+                field_name = m.group(1)
+                fk_field_name = m.group(3)
+                if fk_field_name:
+                    element[fk_field_name] = getattr(getattr(item, field_name), fk_field_name)
+                else:
+                    element[field_name] = getattr(item, field_name).__str__()
+            elif field.startswith('ts__'):
+                element[field[4:]] = getattr(item, field[4:]).isoformat()
+            else:
+                element[field] = getattr(item, field)
+        results.append(element)
+    return results
+
+
+@require_http_methods(["GET"])
 def index(request):
     return render(request, 'app/main.html')
 
+
+@require_http_methods(["GET"])
+def contacts(request):
+    try:
+        category_id = int(request.GET.get('category_id', 0))
+        activity_id = int(request.GET.get('activity_id', 0))
+        country_id = int(request.GET.get('country_id', 0))
+        border_id = int(request.GET.get('border_id', 0))
+        afiliation_id = int(request.GET.get('afiliation_id', 0))
+        offset = int(request.GET.get('offset', 0))
+        count = int(request.GET.get('count', 25))
+    except ValueError:
+        category_id = 0
+        activity_id = 0
+        country_id = 0
+        border_id = 0
+        afiliation_id = 0
+        offset = 0
+        count = 25
+    query = Contact.objects
+    is_individual = False
+    if category_id > 0:
+        query = query.filter(contactCategory=category_id)
+        try:
+            is_individual = ContactCategory.objects.filter(contactCategoryId=category_id)[0].isIndividual
+        except IndexError:
+            is_individual = False
+    if activity_id > 0:
+        query = query.filter(activityFromList=activity_id)
+    if country_id > 0:
+        query = query.filter(contactCountry=country_id)
+    if border_id > 0:
+        query = query.filter(borderLocationFromList=border_id)
+    if afiliation_id > 0:
+        query = query.filter(contactAfiliationFromList=afiliation_id)
+    if is_individual:
+        object_list = simplify_data(
+            query.filter(contactStatus=2).order_by('lastName', 'firstName')[offset:offset+count],
+            ['fk__contactCategory', 'firstName', 'lastName',
+             'fk__activityFromList', 'fk__borderLocationFromList', 'fk__contactAfiliationFromList',
+             'fk__contactCountry', 'fk__contactCountry__phonePrefix', 'phoneLocalNumber', 'email'])
+    else:
+        object_list = simplify_data(
+            query.filter(contactStatus=2, contactCategory__isIndividual=False).order_by(
+                'lastName', 'firstName')[offset:offset+count],
+            ['fk__contactCategory', 'organizationName',
+             'fk__borderLocationFromList',
+             'fk__contactCountry', 'fk__contactCountry__phonePrefix', 'phoneLocalNumber', 'email'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def contact_categories(request):
+    object_list = simplify_data(ContactCategory.objects.all().order_by('contactCategoryName'),
+                                ['contactCategoryName', 'isIndividual'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def contact_activities(request):
+    object_list = simplify_data(ContactActivity.objects.all().order_by('contactActivityName'),
+                                ['contactActivityName'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def contact_afiliations(request):
+    object_list = simplify_data(ContactAfiliation.objects.all().order_by('contactAfiliationName'),
+                                ['contactAfiliationName'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def events(request):
+    try:
+        count = int(request.GET.get('count', 1000000))
+    except ValueError:
+        count = 1000000
+    object_list = simplify_data(Event.objects.all().order_by('-eventDate', 'eventTitle')[0:count],
+                                ['eventTitle', 'ts__eventDate', 'fk__eventCountry', 'eventLocation',
+                                 'url__mainDocument', 'url__additionalDocument',
+                                 'contactInfo', 'objectives', 'communication'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def resources(request):
+    try:
+        language_id = int(request.GET.get('language_id', 0))
+        category_id = int(request.GET.get('category_id', 0))
+    except ValueError:
+        language_id = 0
+        category_id = 0
+    query = Resource.objects
+    if language_id > 0:
+        query = query.filter(language=language_id)
+    if category_id > 0:
+        query = query.filter(resourceCategory=category_id)
+    object_list = simplify_data(query.order_by('resourceCategory', 'language', 'title'),
+                                ['fk__resourceCategory', 'fk__language', 'title', 'url__pdfFile',
+                                 'url__firstPagePicture', 'description'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def resource_categories(request):
+    object_list = simplify_data(ResourceCategory.objects.all().order_by('resourceCategoryName'),
+                                ['resourceCategoryName'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def countries(request):
+    object_list = simplify_data(Country.objects.filter(visible=True).order_by('orderPriority', 'countryName'),
+                                ['countryName', 'countryCode', 'phonePrefix'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def borders(request):
+    object_list = simplify_data(Border.objects.all().order_by('borderName'),
+                                ['borderName'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def languages(request):
+    object_list = simplify_data(Language.objects.all().order_by('languageName'),
+                                ['languageName'])
+    return HttpResponse(status=200,
+                        content=json.dumps(object_list),
+                        content_type='application/json')
+
+
+@require_http_methods(["GET"])
+def export(request):
+    object_list = simplify_data(Contact.objects.filter(
+        contactCategory__isIndividual=True, contactStatus=Contact.APPROVED).order_by('lastName', 'firstName'),
+            ['fk__contactCategory', 'firstName', 'lastName',
+             'fk__activityFromList', 'fk__borderLocationFromList', 'fk__contactAfiliationFromList',
+             'fk__contactCountry', 'fk__contactCountry__phonePrefix', 'phoneLocalNumber', 'email'])
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="contacts.csv"'
+
+    writer = csv.writer(response)
+    line = []
+    for fieldName in object_list[0]:
+        line.append(fieldName)
+    writer.writerow(line)
+    for row in object_list:
+        line = []
+        for field in row:
+            line.append(row[field])
+        writer.writerow(line)
+    return response
+
+
+@require_http_methods(["POST"])
+def register(request):
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except ValueError as e:
+        return HttpResponse(status=401,
+                            content='{"Error": "Invalid JSON string: ' + e.__str__() + '"}',
+                            content_type='application/json')
+
+    # Build Contact
+    try:
+        contact = Contact()
+        contact.contactCategory = ContactCategory.objects.get(contactCategoryId=body['contact']['contactCategory'])
+
+        if contact.contactCategory.isIndividual:
+            contact.firstName = body['contact']['firstName']
+            contact.lastName = body['contact']['lastName']
+            contact.activityFree = body['contact']['activityFree']
+            if int(body['contact']['activityFromList']) > 0:
+                contact.activityFromList = ContactActivity.objects.get(
+                    contactActivityId=body['contact']['activityFromList'])
+            contact.contactAfiliationFree = body['contact']['contactAfiliationFree']
+            if int(body['contact']['contactAfiliationFromList']) > 0:
+                contact.contactAfiliationFromList = ContactAfiliation.objects.get(
+                    contactAfiliationId=body['contact']['contactAfiliationFromList'])
+        else:
+            contact.organizationName = body['contact']['organizationName']
+
+        contact.borderLocationFree = body['contact']['borderLocationFree']
+        if int(body['contact']['borderLocationFromList']) > 0:
+            contact.borderLocationFromList = Border.objects.get(borderId=body['contact']['borderLocationFromList'])
+        contact.contactCountry = Country.objects.get(countryId=body['contact']['contactCountry'])
+        contact.phoneLocalNumber = body['contact']['phoneLocalNumber']
+        contact.email = body['contact']['email']
+        contact.contactStatus = ContactStatus.objects.get(contactStatusId=Contact.NEW)
+
+        try:
+            contact.full_clean()
+            contact.save()
+        except ValidationError as e:
+            return HttpResponse(status=400,
+                                content='{"Error": "Invalid contact data: ' + e.__str__() + '"}',
+                                        content_type='application/json')
+    except Exception as e:
+        return HttpResponse(status=400,
+                            content='{"Error": "Contact not created (' + e.__str__() + ')"}',
+                            content_type='application/json')
+
+    return HttpResponse(status=200,
+                        content=json.dumps(simplify_data([contact], [])),
+                        content_type='application/json')

@@ -53,6 +53,7 @@ INSERT INTO `app_contactcategory` (`contactCategoryId`, `contactCategoryName`, `
   (5,'National Women Associations',0),
   (6,'Women Trading across border in EAC',1),
   (7,'Border or Regulatory Agencies',0);
+  (8,'Logistic Service Providers',0);
 COMMIT;
 
 #

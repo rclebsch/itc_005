@@ -1,7 +1,6 @@
 ﻿from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
 
 
 class Country(models.Model):
@@ -54,7 +53,7 @@ class Event(models.Model):
     eventLocation = models.CharField(max_length=255, unique=True, verbose_name='Event Location')
     mainDocument = models.FileField(blank=True, upload_to='events', verbose_name='Main Document')
     additionalDocument = models.FileField(blank=True, upload_to='events', verbose_name='Additional Document')
-    contactInfo = models.CharField(max_length=255, unique=True, verbose_name='Contact Information')
+    contactInfo = models.CharField(max_length=255, verbose_name='Contact Information')
     objectives = models.TextField(blank=True, verbose_name='Event Objectives')
     communication = models.TextField(blank=True, verbose_name='Communication text')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creation date and time')
@@ -155,6 +154,7 @@ class Contact(models.Model):
         (REJECTED, 'Rejected'),
         (DISABLED, 'Disabled')
     )
+    errorDesc = ''
 
     contactId = models.AutoField(unique=True, primary_key=True, verbose_name='Contact ID')
     contactCategory = models.ForeignKey(ContactCategory, blank=False, db_index=True,
@@ -179,7 +179,7 @@ class Contact(models.Model):
                                                   related_name='afiliation_from_list',
                                                   verbose_name='Afiliation from List')
     phoneLocalNumber = models.CharField(max_length=255, blank=True, null=True, verbose_name='Phone Local Number')
-    email = models.EmailField(max_length=255, unique=True, validators=[validate_email], verbose_name='E-Mail')
+    email = models.EmailField(max_length=255, unique=True, verbose_name='E-Mail')
     contactStatus = models.ForeignKey(ContactStatus, db_index=True,
                                       related_name='contactStatus',
                                       verbose_name='Contact Status')
