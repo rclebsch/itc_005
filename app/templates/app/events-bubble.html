@@ -1,0 +1,20 @@
+<section class="box-hld clearfix dzHolderCC">
+    <div ng-controller="eventBubbleCtrl" data-ng-init="init()">
+        <div class="dropzone PBClear">
+            <h2 class="dark-blue">
+                <a href="/itc/news/latest-news/"><span>Coming Events</span></a>
+            </h2>
+            <div class="PBViewing" style="width:100%;">
+                <ul class="list-style-1">
+                    <li ng-repeat="event in events">
+                        <a href="{[{event.mainDocument}]}" target="_blank">
+                            <span class="events-date" ng-bind="event.eventDate | date:'dd MMM. yyyy'"></span>
+                            <span class="events-date">{[{event.eventLocation}]}, {[{event.eventCountry}]}</span>
+                            <span>{[{event.eventTitle}]}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

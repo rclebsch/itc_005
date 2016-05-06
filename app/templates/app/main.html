@@ -19,7 +19,7 @@
         The EAC Project
     </title>
 </head>
-<body>
+<body ng-app="eacApp">
 <div>
     {% include "app/header-top-desktop.html" %}
     {% include "app/header-mid.html"%}
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 no-print-section">
-                    {% include "app/events.html"%}
+                    {% include "app/events-bubble.html"%}
                 </div>
             </div>
         </div>
@@ -53,4 +53,7 @@
     </footer>
 </div>
 </body>
+<script src="{% static 'app/js/angular/angular.js' %}"></script>
+<script src="{% static 'app/js/angular/angular-route.js' %}"></script>
+<script src="{% static 'app/js/eac.js' %}"></script>
 </html>
