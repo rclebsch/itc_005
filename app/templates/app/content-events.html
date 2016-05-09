@@ -1,0 +1,22 @@
+<section ng-controller="eventsContentCtrl" data-ng-init="init()">
+    <p>List of all events</p>
+    <table ng-table="eventsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
+  	    <tr ng-repeat="event in data">
+            <td data-title="'Date'" sortable="'eventDate'" filter="{ 'eventDate': 'text' }" class="events-date" ng-bind="event.eventDate | date:'dd MMM. yyyy'"></td>
+            <td data-title="'Country'" sortable="'eventCountry'" filter="{ 'eventCountry': 'text' }">{[{event.eventCountry}]}</td>
+            <td data-title="'Location'" sortable="'eventLocation'" filter="{ 'eventLocation': 'text' }">{[{event.eventLocation}]}</td>
+            <td data-title="'Title'" sortable="'eventTitle'" filter="{ 'eventTitle': 'text' }">{[{event.eventTitle}]}</td>
+            <td data-title="'Details'">
+                Contact:{[{event.contactInfo}]}<br/>
+                Objectives:{[{event.objectives}]}<br/>
+                Communication:{[{event.communication}]}<br/>
+                <a target="_blank" ng-href="{[{event.mainDocument}]}" ng-hide="event.mainDocument == ''">
+                    <nobr><img width="48" height="48" src="/static/app/images/pdf-icon.png" /></nobr>
+                </a>
+                <a target="_blank" ng-href="{[{event.additionalDocument}]}" ng-hide="event.additionalDocument == ''">
+                    <nobr><img width="48" height="48" src="/static/app/images/pdf-icon.png"/></nobr>
+                </a>
+            </td>
+        </tr>
+    </table>
+</section>
