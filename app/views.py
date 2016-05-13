@@ -59,8 +59,7 @@ def contacts(request):
         country_id = int(request.GET.get('country_id', 0))
         border_id = int(request.GET.get('border_id', 0))
         afiliation_id = int(request.GET.get('afiliation_id', 0))
-        offset = int(request.GET.get('offset', 0))
-        count = int(request.GET.get('count', 25))
+        is_individual = (1 == int(request.GET.get('is_individual', 0)))
     except ValueError:
         category_id = 0
         activity_id = 0
@@ -70,7 +69,6 @@ def contacts(request):
         offset = 0
         count = 25
     query = Contact.objects
-    is_individual = False
     if category_id > 0:
         query = query.filter(contactCategory=category_id)
         try:
@@ -87,14 +85,14 @@ def contacts(request):
         query = query.filter(contactAfiliationFromList=afiliation_id)
     if is_individual:
         object_list = simplify_data(
-            query.filter(contactStatus=2).order_by('lastName', 'firstName')[offset:offset+count],
+            query.filter(contactStatus=2).order_by('lastName', 'firstName'),
             ['fk__contactCategory', 'firstName', 'lastName',
              'fk__activityFromList', 'fk__borderLocationFromList', 'fk__contactAfiliationFromList',
              'fk__contactCountry', 'fk__contactCountry__phonePrefix', 'phoneLocalNumber', 'email'])
     else:
         object_list = simplify_data(
             query.filter(contactStatus=2, contactCategory__isIndividual=False).order_by(
-                'lastName', 'firstName')[offset:offset+count],
+                'lastName', 'firstName'),
             ['fk__contactCategory', 'organizationName',
              'fk__borderLocationFromList',
              'fk__contactCountry', 'fk__contactCountry__phonePrefix', 'phoneLocalNumber', 'email'])
@@ -139,7 +137,7 @@ def events(request):
     object_list = simplify_data(Event.objects.all().order_by('-eventDate', 'eventTitle')[0:count],
                                 ['eventTitle', 'ts__eventDate', 'fk__eventCountry', 'eventLocation',
                                  'url__mainDocument', 'url__additionalDocument',
-                                 'contactInfo', 'objectives', 'communication'])
+                                 'contactInfo', 'objectives'])
     return HttpResponse(status=200,
                         content=json.dumps(object_list),
                         content_type='application/json')

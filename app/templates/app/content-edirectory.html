@@ -1,0 +1,14 @@
+<section ng-controller="eDirectoryContentCtrl" data-ng-init="init()">
+    <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
+  	    <tr ng-repeat="contact in data">
+            <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}</td>
+            <td data-title="'First Name'" sortable="'firstName'" filter="{ 'firstName': 'text' }">{[{contact.firstName}]}</td>
+            <td data-title="'Activity & Products'" sortable="'activityFromList'" filter="{ 'activityFromList': 'text' }">{[{contact.activityFromList}]}</td>
+            <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'text' }">{[{contact.borderLocationFromList}]}</td>
+            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'text' }">{[{contact.contactCountry}]}</td>
+            <td data-title="'Afiliation'" sortable="'contactAfiliationFromList'" filter="{ 'contactAfiliationFromList': 'text' }">{[{contact.contactAfiliationFromList}]}</td>
+            <td data-title="'Phone Nr'" sortable="'phoneLocalNumber'" filter="{ 'phoneLocalNumber': 'text' }">+{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}</td>
+            <td data-title="'E-Mail'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</td>
+        </tr>
+    </table>
+</section>

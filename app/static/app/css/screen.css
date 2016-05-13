@@ -73,7 +73,7 @@ html body{-webkit-text-size-adjust:none}
 .col-lg-9, 
 .col-lg-10, 
 .col-lg-11, 
-.col-lg-12{ position:relative;  min-height:1px;  padding-right:10px;  padding-left:10px}
+.col-lg-12{ position:relative;  min-height:1px;  padding-right:5px;  padding-left:5px}
 
 .desktop{display:block}
 .phone{display:none}
@@ -319,7 +319,7 @@ span.customSelect.changed{background-color:#f0dea4}
 .banner{position:relative; margin:10px 0px 0 0; z-index:1;}
 
 .list-style-1{margin:0 0 10px 0; padding:0}
-.list-style-1 li{margin:0; padding:16px 8px 14px 12px; border-bottom:solid 1px #d6e6f4; display:block}
+.list-style-1 li{margin:0; padding:16px 2px 14px 8px; border-bottom:solid 1px #d6e6f4; display:block}
 .list-style-1 li a{background:url(/static/app/images/arrow-new.png) right -0px no-repeat}
 .list-style-1 li a:hover{background:url(/static/app/images/arrow-new-hover.png) right -0px no-repeat}
 .list-style-1 li:last-child{border-bottom:solid 0px #b7b8b8}
