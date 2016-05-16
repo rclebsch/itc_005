@@ -25,11 +25,11 @@
     {% include "app/header-top-desktop.html" %}
     {% include "app/header-mid.html"%}
     <section class="wrapper clearfix">
-        <div class="row clearfix">
+        <div class="row clearfix" ng-controller="titleCtrl">
             <div class="page-top-hld clearfix">
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
-                    <h1 style="margin-left:0; margin-right:0;" class="column-heading">[The active menu item]</h1>
+                    <h1 style="margin-left:0; margin-right:0;" class="column-heading">{[{title}]}</h1>
                 </div>
                 {% include "app/header-share.html"%}
             </div>

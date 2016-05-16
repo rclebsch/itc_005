@@ -7,7 +7,21 @@
                         <div class="widget">
                             <div>
                                 <div class="content">
-                                    {% include "app/content-events.html"%}
+                                    <div ng-show="title=='-The Project'">
+                                        {% include "app/the-project.html"%}
+                                    </div>
+                                    <div ng-show="title=='-Women EAC Network Directory'">
+                                        {% include "app/women-EAC-directory.html"%}
+                                    </div>
+                                    <div ng-show="title=='-EAC Business Contacts'">
+                                        {% include "app/EAC-business-contacts.html"%}
+                                    </div>
+                                    <div ng-show="title=='-Publications, Resources and downloads'">
+                                        {% include "app/publications-res-down.html"%}
+                                    </div>
+                                    <div ng-show="title=='-Events in EAC'">
+                                        {% include "app/content-events.html"%}
+                                    </div>
                                 </div>
                             </div>
                         </div>
