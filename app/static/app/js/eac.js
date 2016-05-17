@@ -76,7 +76,9 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	};
 };
 
-
+eacApp.controller('titleCtrl', function ($scope) {
+    $scope.title = '-The Project';
+})
 
 
 
