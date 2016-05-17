@@ -2,6 +2,8 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ValidationError
+import requests
+from django.conf import settings
 
 import json
 import re
@@ -48,7 +50,7 @@ def simplify_data(data, fields):
 
 @require_http_methods(["GET"])
 def index(request):
-    return render(request, 'app/main.html')
+    return render(request, 'app/main.html', {'settings': settings})
 
 
 @require_http_methods(["GET"])
@@ -103,7 +105,12 @@ def contacts(request):
 
 @require_http_methods(["GET"])
 def contact_categories(request):
-    object_list = simplify_data(ContactCategory.objects.all().order_by('contactCategoryName'),
+    is_individual = int(request.GET.get('is_individual', None))
+    query = ContactCategory.objects
+    if is_individual is not None:
+        query = query.filter(isIndividual=is_individual)
+
+    object_list = simplify_data(query.order_by('contactCategoryName'),
                                 ['contactCategoryName', 'isIndividual'])
     return HttpResponse(status=200,
                         content=json.dumps(object_list),
@@ -223,6 +230,17 @@ def export(request):
     return response
 
 
+def validate_captcha(token):
+    url = "https://www.google.com/recaptcha/api/siteverify"
+    params = {
+        'secret': settings.RECAPTCHA_SECRET_KEY,
+        'response': token,
+    }
+    verify_rs = requests.get(url, params=params, verify=False)
+    verify_rs = verify_rs.json()
+    return verify_rs.get("success", False)
+
+
 @require_http_methods(["POST"])
 def register(request):
     try:
@@ -232,8 +250,12 @@ def register(request):
                             content='{"Error": "Invalid JSON string: ' + e.__str__() + '"}',
                             content_type='application/json')
 
-    # Build Contact
     try:
+        # Check captcha
+        token = body['captchaToken']
+        if not validate_captcha(token):
+            raise ValidationError('Invalid Captcha')
+        # Build Contact
         contact = Contact()
         contact.contactCategory = ContactCategory.objects.get(contactCategoryId=body['contact']['contactCategory'])
 
@@ -244,10 +266,10 @@ def register(request):
             if int(body['contact']['activityFromList']) > 0:
                 contact.activityFromList = ContactActivity.objects.get(
                     contactActivityId=body['contact']['activityFromList'])
-            contact.contactAfiliationFree = body['contact']['contactAfiliationFree']
-            if int(body['contact']['contactAfiliationFromList']) > 0:
+            contact.contactAfiliationFree = body['contact']['afiliationFree']
+            if int(body['contact']['afiliationFromList']) > 0:
                 contact.contactAfiliationFromList = ContactAfiliation.objects.get(
-                    contactAfiliationId=body['contact']['contactAfiliationFromList'])
+                    contactAfiliationId=body['contact']['afiliationFromList'])
         else:
             contact.organizationName = body['contact']['organizationName']
 
@@ -261,7 +283,7 @@ def register(request):
 
         try:
             contact.full_clean()
-            contact.save()
+            # contact.save()
         except ValidationError as e:
             return HttpResponse(status=400,
                                 content='{"Error": "Invalid contact data: ' + e.__str__() + '"}',

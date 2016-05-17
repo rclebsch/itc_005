@@ -2037,3 +2037,17 @@ div.PBViewing{float:none}
 .menu-access >ul >li:last-child a{padding-right:20px}
 .menu-access ul li ul li a:hover{background-color:#3081c8; color:#fff; border-bottom:none}
 .menu-access ul li ul li a.active{background-color:#7D8793; color:#fff}
+
+.register{
+    background-color: #3081c8;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 7px 7px 7px 7px;
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+    color: #fff;
+    border: 0;
+}
+.register:hover{
+    background-color: #449be7;
+}

@@ -4,19 +4,23 @@
             <div class="PBViewing" style="width:100%;">
                 <div class="widget">
                     <div>
-
                         <div class="content">
-                            {% include "app/content-edirectory.html"%}
+                            <div ng-show="isVisible('section-the-project')">
+                                {% include "app/content-the-project.html" %}
+                            </div>
+                            <div ng-show="isVisible('section-edirectory')">
+                                {% include "app/content-edirectory.html"%}
+                            </div>
+                            <div ng-show="isVisible('section-contacts')">
+                                {% include "app/content-contacts.html"%}
+                            </div>
+                            <div ng-show="isVisible('section-resources')">
+                                {% include "app/content-resources.html"%}
+                            </div>
+                            <div ng-show="isVisible('section-events')">
+                                {% include "app/content-events.html"%}
+                            </div>
                         </div>
-
-                        <div class="content">
-                            {% include "app/content-contacts.html"%}
-                        </div>
-
-                        <div class="content">
-                            {% include "app/content-events.html"%}
-                        </div>
-
                     </div>
                 </div>
             </div>

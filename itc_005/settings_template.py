@@ -161,3 +161,6 @@ LOGGING = {
     }
 }
 
+# Catcha Tokens
+RECAPTCHA_SECRET_KEY = 'the-secret-key'
+RECAPTCHA_KEY = 'the-key'

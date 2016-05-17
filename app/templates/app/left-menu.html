@@ -9,16 +9,8 @@
                             <div>
                                 <div class="content">
                                     <div class="sortHld toggleSection2 left-hld-menu2">
-                                        <ul class="menu-left">
-                                            <li><a href="#" ng-click="title='-The Project'">-The
-                                                Project</a></li>
-                                            <li><a href="#" ng-click="title='-Women EAC Network Directory'">-Women EAC
-                                                Network Directory</a></li>
-                                            <li><a href="#" ng-click="title='-EAC Business Contacts'">-EAC Business
-                                                Contacts</a></li>
-                                            <li><a href="#" ng-click="title='-Publications, Resources and downloads'">-Publications,
-                                                Resources and downloads</a></li>
-                                            <li><a href="#" ng-click="title='-Events in EAC'">-Events in EAC</a></li>
+                                        <ul class="menu-left" ng-repeat="section in sections">
+                                            <li><a href="#" ng-click="changeContent(section.id)">{[{section.title}]}</a></li>
                                         </ul>
                                     </div>
                                 </div>

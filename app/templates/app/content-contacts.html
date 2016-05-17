@@ -1,4 +1,4 @@
-<section ng-controller="contactsContentCtrl" data-ng-init="init()">
+<section id="contactsController" ng-controller="contactsContentCtrl">
     <table ng-table="contactsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="contact in data">
             <td data-title="'Organization Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.organizationName}]}</td>

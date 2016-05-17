@@ -1,0 +1,33 @@
+<section ng-controller="registerCtrl">
+    <fieldset>
+        <legend>Personal Information</legend>
+        <select ng-model="categoryId" ng-options="category.id as category.contactCategoryName for category in categories"><option value="">Select Category</option></select><br/>
+        <input type="text" ng-model="firstName" placeholder="First Name"/>
+        <input type="text" ng-model="lastName" placeholder="Last Name"/>
+        <br/><br/>
+        <label>Location:</label><br/>
+        <select ng-model="countryId" ng-change="selectCountry(countryId)" ng-options="country.id as country.countryName for country in countries"><option value="">Select Country</option></select>
+        <select ng-model="borderId" ng-options="border.id as border.borderName for border in borders"><option value="">Select Border</option></select>
+        <input type="text" ng-model="border" placeholder="Border not in list"/>
+        <br/><br/>
+
+        <label>Contact information:</label><br/>
+        <span>{[{phonePrefix}]}</span><input type="text" ng-model="phone" placeholder="Local Phone"/>
+        <input type="text" ng-model="email" placeholder="E-mail"/>
+        <br/><br/>
+
+        <label>Activity:</label><br/>
+        <select ng-model="activityId" ng-options="activity.id as activity.contactActivityName for activity in activities"><option value="">Select Activity</option></select>
+        <input type="text" ng-model="activity" placeholder="Activity not in list"/>
+        <br/><br/>
+
+        <label>Afiliation:</label><br/>
+        <select ng-model="afiliationId" ng-options="afiliation.id as afiliation.contactAfiliationName for afiliation in afiliations"><option value="">Select Afiliation</option></select>
+        <input type="text" ng-model="afiliation" placeholder="Afiliation not in list"/><br/>
+    </fieldset>
+    <br/>
+    <div id="the-captcha" class="g-recaptcha" data-sitekey="{{ settings.RECAPTCHA_KEY  }}"></div>
+    <input type="button" value="Register" class="register" ng-click="register()">
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</section>
