@@ -10,6 +10,26 @@ eacApp.config(function($interpolateProvider) {
 	$interpolateProvider.endSymbol('}]}');
 });
 
+eacApp.directive('defaultFirstPage', function() {
+  return {
+    link: function(scope, element, attrs) {
+
+      scope.$watch(function() {
+          return attrs['ngSrc'];
+        }, function (value) {
+          if (!value) {
+            element.attr('src', attrs.defaultFirstPage);
+          }
+      });
+
+      element.bind('error', function() {
+        element.attr('src', attrs.defaultFirstPage);
+      });
+    }
+  }
+});
+
+
 eacApp.controller('eventBubbleCtrl', function ($scope, $http) {
 	$scope.initialized = false;
 	$scope.events = [];
@@ -145,6 +165,46 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    }).success(function (result) {
 	    	$scope.contacts = result;
             $scope.contactsTable.reload();
+			$scope.initialized = true;
+	    }).
+	    error(function(data, status, headers, config){
+	    	console.log(data);
+	    });
+	};
+};
+
+eacApp.controller('resourcesContentCtrl', resourcesContentCtrl);
+
+function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
+	$scope.initialized = false;
+	$scope.resources = [];
+    $scope.data = [];
+    $scope.resourcesTable = new ngTableParams({
+                page: 1,
+                count: 10
+            }, {
+                total: 1,  // value less than count hide pagination
+                //total: $scope.events.length,
+                getData: function ($defer, params) {
+                    var filteredData = params.sorting() ? $filter('orderBy')($scope.resources, params.orderBy()) : $scope.resources;
+                    var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
+                    $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    params.total(sortedData.length);
+                    $defer.resolve($scope.data);
+                }
+            });
+
+	$scope.init = function(){
+		console.log('resourcesContentCtrl.init');
+		if ($scope.initialized) {
+			return;
+		}
+		$http({
+	        method: 'GET',
+	        url: 'resources'
+	    }).success(function (result) {
+	    	$scope.resources = result;
+            $scope.resourcesTable.reload();
 			$scope.initialized = true;
 	    }).
 	    error(function(data, status, headers, config){
@@ -329,7 +389,7 @@ eacApp.controller('titleCtrl', function ($scope) {
 			id: 'section-resources',
 			title: 'Publications, Resources and downloads',
 			extendedTitle: 'Resources: Agricultural Model Contracts, Tools and training materials',
-			controllerId: null},
+			controllerId: 'resourcesController'},
 		'section-events': {
 			id: 'section-events',
 			title: 'Events in EAC',

@@ -2051,3 +2051,18 @@ div.PBViewing{float:none}
 .register:hover{
     background-color: #449be7;
 }
+
+.resource-first-page {
+    max-width: 30%;
+}
+
+.resource-first-page:hover {
+    border: solid;
+    border-color: #449be7;
+}
+
+.resource-details {
+    float: right;
+    width: 70%;
+    padding: 10px;
+}
