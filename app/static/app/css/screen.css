@@ -2052,6 +2052,11 @@ div.PBViewing{float:none}
     background-color: #449be7;
 }
 
+.register-error {
+    color: red;
+    font-size: 14px;
+}
+
 .resource-first-page {
     max-width: 30%;
 }

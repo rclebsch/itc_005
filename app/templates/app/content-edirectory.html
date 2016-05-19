@@ -1,4 +1,5 @@
 <section id="eDirectoryController"  ng-controller="eDirectoryContentCtrl">
+    <input type="button" value="Register" class="register" ng-click="openRegister()"/>
     <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="contact in data">
             <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}</td>

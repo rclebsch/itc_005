@@ -194,6 +194,8 @@ class Contact(models.Model):
             return self.organizationName
 
     def clean(self):
+        if self.contactCategory is None:
+            raise ValidationError('No category specified')
         if self.contactCategory.isIndividual and (self.activityFromList is None) \
                 and (not self.activityFree or (self.contactStatus.contactStatusId == self.APPROVED)):
             raise ValidationError('No activity specified')

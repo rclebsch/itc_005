@@ -1,6 +1,10 @@
-<section ng-controller="registerCtrl">
+<div ng-controller="registerCtrl" ng-init="init()">
+
     <fieldset>
         <legend>Personal Information</legend>
+        <div ng-show="error">
+            <span class="register-error">The registration failed because of the following error:<br/>{[{errorDesc}]}</span>
+        </div>
         <select ng-model="categoryId" ng-options="category.id as category.contactCategoryName for category in categories"><option value="">Select Category</option></select><br/>
         <input type="text" ng-model="firstName" placeholder="First Name"/>
         <input type="text" ng-model="lastName" placeholder="Last Name"/>
@@ -27,7 +31,5 @@
     </fieldset>
     <br/>
     <div id="the-captcha" class="g-recaptcha" data-sitekey="{{ settings.RECAPTCHA_KEY  }}"></div>
-    <input type="button" value="Register" class="register" ng-click="register()">
-
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</section>
+    <input type="button" value="Register" class="register" ng-click="register()"/>
+</div>

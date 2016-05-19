@@ -1,4 +1,4 @@
-var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate']);
+var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate','ngDialog']);
 
 eacApp.run(['$templateCache', function($templateCache) {
     $templateCache.put('ng-table/filters/text.html', '<input placeholder="select filter" type="text" name="{{name}}" ng-disabled="$filterRow.disabled" ng-model="params.filter()[name]" ng-if="filter == \'text\'" class="input-filter form-control" />');
@@ -9,6 +9,17 @@ eacApp.config(function($interpolateProvider) {
 	$interpolateProvider.startSymbol('{[{');
 	$interpolateProvider.endSymbol('}]}');
 });
+
+eacApp.config(['ngDialogProvider', function (ngDialogProvider) {
+			ngDialogProvider.setDefaults({
+				className: 'ngdialog-theme-default',
+				plain: false,
+				showClose: true,
+				closeByDocument: true,
+				closeByEscape: true,
+				appendTo: false
+			});
+		}]);
 
 eacApp.directive('defaultFirstPage', function() {
   return {
@@ -95,7 +106,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 
 eacApp.controller('eDirectoryContentCtrl', eDirectoryContentCtrl);
 
-function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams) {
+function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog) {
 	$scope.initialized = false;
 	$scope.contacts = [];
     $scope.data = [];
@@ -130,6 +141,14 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    error(function(data, status, headers, config){
 	    	console.log(data);
 	    });
+	};
+
+	$scope.openRegister = function() {
+		ngDialog.open({
+			template: 'registerId',
+			controller: 'registerCtrl',
+			className: 'ngdialog-theme-default'
+		});
 	};
 };
 
@@ -235,6 +254,8 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	$scope.afiliation = null;
 	$scope.afiliations = [];
     $scope.data = [];
+	$scope.error = false;
+	$scope.errorDesc = '';
 
 	$scope.populateCountries = function() {
 		console.log('populateCountries');
@@ -305,10 +326,18 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	        url: 'contact_categories?is_individual=1'
 	    }).success(function (result) {
 	    	$scope.categories = result;
+			$scope.categoryId = result[0].id;
 	    }).
 	    error(function(data, status, headers, config){
 	    	console.log(data);
 	    });
+	};
+
+	$scope.loadJavascript = function(uri) {
+	var script = document.createElement('script');
+	script.src = uri;
+	script.async = true;
+	document.head.appendChild(script);
 	};
 
 	$scope.init = function(){
@@ -320,11 +349,14 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 		this.populateBorders();
 		this.populateAfiliations();
 		this.populateCategories();
+		this.loadJavascript("https://www.google.com/recaptcha/api.js");
 		$scope.initialized = true;
 	};
 
 	$scope.displayError = function(error) {
 		console.log(error);
+		$scope.error = true;
+		$scope.errorDesc = error;
 	}
 
 	$scope.register = function() {
