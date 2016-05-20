@@ -28,7 +28,7 @@
     {% include "app/header-top-desktop.html" %}
     {% include "app/header-mid.html"%}
     <section class="wrapper clearfix">
-        <div class="row clearfix" ng-controller="titleCtrl">
+        <div class="row clearfix" ng-controller="titleCtrl" ng-init="init()">
             <div class="page-top-hld clearfix">
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
@@ -60,6 +60,7 @@
     {% include "app/register.html"%}
 </script>
 </body>
+<script src="{% static 'app/js/jquery.min.js' %}"></script>
 <script src="{% static 'app/js/angular/angular.js' %}"></script>
 <script src="{% static 'app/js/angular/angular-route.js' %}"></script>
 <script src="{% static 'app/js/angular/ngTable/ng-table.js' %}"></script>

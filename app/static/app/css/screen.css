@@ -127,7 +127,7 @@ html body{-webkit-text-size-adjust:none}
 
 .top-form{float:right; margin-right:21px}
 .search-hld{float:right; margin:4px 5px 4px 0;  width:auto; padding:1px; position:absolute; right:0; top:-42px}
-.search-hld input[type="text"]{float:right; width:62%; margin-right:5px; border:0; height:30px; font-size:0.833em; line-height:1.34em; color:#444343; padding-left:2%; padding-right:30px; border:1px solid #CCC; border-radius:4px; box-shadow:2px 2px 0px #EEECEC inset; background:#fff url(/images/split-icon.png) right -313px no-repeat}
+.search-hld input[type="text"]{float:right; width:62%; margin-right:5px; border:0; height:30px; font-size:0.833em; line-height:1.34em; color:#444343; padding-left:2%; padding-right:30px; border:1px solid #CCC; border-radius:4px; box-shadow:2px 2px 0px #EEECEC inset; background:#fff url(/static/app/images/split-icon.png) right -313px no-repeat}
 .search-hld input[type="text"]:focus{border:solid 1px #3081c8}
 .search-hld input[type="button"]{ width:35%; padding:4px 0 4px; height:31px;  border:0; float:right; border-radius:4px; background-color:#3081c8; color:#fff; font-weight:bold; font-size:0.85em; cursor:pointer}
 .search-hld input[type="button"]:hover{background-color:#449be7}
@@ -178,7 +178,7 @@ span.customSelect.changed{background-color:#f0dea4}
 .top-menu li ul.dblock li:hover ul li a{color:#000 !important;}
 .top-menu li ul.dblock li:hover ul li a:hover{color:#fff !important;}
 
-.dwar{background:url(/images/split-icon.png) 0 -357px no-repeat; width:12px; height:10px; content:""; display:block; position:absolute; right:4px; top:13px}
+.dwar{background:url(/static/app/images/split-icon.png) 0 -357px no-repeat; width:12px; height:10px; content:""; display:block; position:absolute; right:4px; top:13px}
 
 .menu ul li ul li a:hover{background-color:#3081c8; color:#fff; border-bottom:none}
 .menu ul li ul li a.active{background-color:#002b54; color:#fff}
@@ -904,7 +904,7 @@ span.design_validation_failed {border: none !important;}
 .list-style-6 li .blog-article-top a h3:hover{ background-position: right -1471px;}
 
 .list-style-6 li .blog-article-bottom ul{ margin: 7px 0; padding: 0;}
-.list-style-6 li .blog-article-bottom ul li{ background: url("../images/split-icon.png") no-repeat scroll -50px -206px rgba(0, 0, 0, 0);}
+.list-style-6 li .blog-article-bottom ul li{ background: url("/static/app/images/split-icon.png") no-repeat scroll -50px -206px rgba(0, 0, 0, 0);}
 .list-style-6 li .blog-article-bottom ul li a { padding: 0 22px 2px}
 
 /*-------------------------------------------
@@ -1607,8 +1607,8 @@ body .container{width:auto !important}
 .menu-hld .wrapper{width:100%; margin:0}
 .menu ul li:first-child a.active{margin:0}
 .icon-exporters, .icon-tsi, .icon-policymakers{display:none}
-.toggleMenu{background:url(/images/split-icon.png) center -45px no-repeat; width:40px; height:36px; float:left; margin:16px 0 0; outline:0; border:none}
-.toggle-menu-left-menu{background:url(/images/split-icon.png) 0px -413px no-repeat; width:30px; height:18px; display:block; margin:9px 0px 0 0;  outline:0; position:absolute; top:0; right:8px}
+.toggleMenu{background:url(/static/app/images/split-icon.png) center -45px no-repeat; width:40px; height:36px; float:left; margin:16px 0 0; outline:0; border:none}
+.toggle-menu-left-menu{background:url(/static/app/images/split-icon.png) 0px -413px no-repeat; width:30px; height:18px; display:block; margin:9px 0px 0 0;  outline:0; position:absolute; top:0; right:8px}
 .toggle-menu-footer{background:#1a73af; display:block; float:right; margin:9px 8px 0px 0; padding:4px 8px; color:#fff !important; text-align:center; font-size:1em}
 .toggle-menu-footer:hover{color:#fff !important}
 .header-bot{border-top:1px solid #E9E9E9}
@@ -1616,11 +1616,11 @@ body .container{width:auto !important}
 .top-form{float:none; margin-right:0}
 .search-hld{width:48%; left:0; position:relative; top:0; margin:14px 0 0;}
 .search-hld input[type="text"]{background:#fff; padding-right:0}
-.search-hld input[type="button"]{background:#3081c8 url(/images/split-icon.png) -64px -312px no-repeat; width:37px; height:30px; text-indent:-10000px}
+.search-hld input[type="button"]{background:#3081c8 url(/static/app/images/split-icon.png) -64px -312px no-repeat; width:37px; height:30px; text-indent:-10000px}
 /*.search-hld{background:#3081c8 url(/images/split-icon.png) -64px -312px no-repeat; width:37px; height:30px; text-indent:-10000px}*/
 .country-menu{font-size:12px; font-weight:bold; line-height:0.833em; color:#fff; float:left; display:block; margin:0px 0 0 0px; width:33%; position:relative}
 .country-menu:hover{color:#fff}
-.country-menu span:after{background:url(/images/split-icon.png) 0 -357px no-repeat; width:12px; height:10px; content:""; display:block; position:absolute; /*left:83px;*/ top:18px; right: 12px;}
+.country-menu span:after{background:url(/static/app/images/split-icon.png) 0 -357px no-repeat; width:12px; height:10px; content:""; display:block; position:absolute; /*left:83px;*/ top:18px; right: 12px;}
 .country-menu span{border-left:solid 1px #4c6985; border-right:solid 1px #4c6985; display:block}
 .country-menu span small{border-left:solid 1px #001427; line-height:1.2; border-right:solid 1px #001427; padding:15px 10px 17px; display:block; font-size:12px; color:#fff !important; text-decoration:none !important}
 .country-menu span small:hover{text-decoration:no !important}
@@ -1947,7 +1947,7 @@ h3.project-heading{margin:0 10px}
 
 .section-holder figure{ width: 100%; margin-bottom: 10px;}
 .section-holder figure img{ width: 100%;}
-.bullet-numbering .toggle-menu-left-menu{ background: url("../images/split-icon.png") no-repeat scroll -60px -413px rgba(0, 0, 0, 0);}
+.bullet-numbering .toggle-menu-left-menu{ background: url("/static/app/images/split-icon.png") no-repeat scroll -60px -413px rgba(0, 0, 0, 0);}
 .section-holder .section-content-block .section-holder-callout-box h3{ width: 83%;}
 .section-holder .section-content-block .section-holder-callout-box .info-icon{ float: right;}
 .section-holder .learning-point{ width: 100%; margin-left: 0;}

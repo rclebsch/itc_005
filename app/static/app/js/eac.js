@@ -58,7 +58,7 @@ eacApp.controller('eventBubbleCtrl', function ($scope, $http) {
 			$scope.initialized = true;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 });
@@ -99,10 +99,10 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 			$scope.initialized = true;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
-};
+}
 
 eacApp.controller('eDirectoryContentCtrl', eDirectoryContentCtrl);
 
@@ -139,7 +139,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 			$scope.initialized = true;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 
@@ -150,7 +150,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 			className: 'ngdialog-theme-default'
 		});
 	};
-};
+}
 
 eacApp.controller('contactsContentCtrl', contactsContentCtrl);
 
@@ -187,10 +187,10 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
 			$scope.initialized = true;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
-};
+}
 
 eacApp.controller('resourcesContentCtrl', resourcesContentCtrl);
 
@@ -227,15 +227,15 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
 			$scope.initialized = true;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
-};
+}
 
 
 eacApp.controller('registerCtrl', registerCtrl);
 
-function registerCtrl ($scope, $http, $filter, ngTableParams) {
+function registerCtrl ($scope, $http) {
 	$scope.initialized = false;
 	$scope.categoryId = null;
 	$scope.categories = [];
@@ -266,7 +266,7 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.countries = result;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 
@@ -289,7 +289,7 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.activities = result;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 
@@ -302,7 +302,7 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.borders = result;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 
@@ -315,7 +315,7 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.afiliations = result;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 
@@ -329,7 +329,7 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 			$scope.categoryId = result[0].id;
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    });
 	};
 
@@ -357,7 +357,7 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 		console.log(error);
 		$scope.error = true;
 		$scope.errorDesc = error;
-	}
+	};
 
 	$scope.register = function() {
 		var token = grecaptcha.getResponse();
@@ -392,11 +392,11 @@ function registerCtrl ($scope, $http, $filter, ngTableParams) {
 	    	console.log(result);
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data);
+	    	console.log(data, status, headers, config);
 	    	$scope.displayError(data.Error);
 	    });
 	}
-};
+}
 
 
 eacApp.controller('titleCtrl', function ($scope) {
@@ -441,6 +441,20 @@ eacApp.controller('titleCtrl', function ($scope) {
 
 	$scope.isVisible = function(id) {
 		return id == $scope.currentSection;
+	};
+
+	$scope.init = function () {
+		$('.sort').click(function (event) {
+        	var $rel = $(this).attr('rel');
+
+			var $selector = $("." + $rel);
+			if ($selector.is(":hidden")) {
+				$selector.slideDown('slow', function () {}).addClass('open');
+			} else {
+				$selector.removeClass('open').slideUp();
+			}
+			event.stopPropagation();
+			return false;
+		});
 	}
 });
-
