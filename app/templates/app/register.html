@@ -5,6 +5,9 @@
         <div ng-show="error">
             <span class="register-error">The registration failed because of the following error:<br/>{[{errorDesc}]}</span>
         </div>
+        <div ng-show="success">
+            <span class="register-success">Registration completed succesfully and waiting for approval.</span>
+        </div>
         <select ng-model="categoryId" ng-options="category.id as category.contactCategoryName for category in categories"><option value="">Select Category</option></select><br/>
         <input type="text" ng-model="firstName" placeholder="First Name"/>
         <input type="text" ng-model="lastName" placeholder="Last Name"/>

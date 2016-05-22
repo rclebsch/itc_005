@@ -255,6 +255,7 @@ function registerCtrl ($scope, $http) {
 	$scope.afiliations = [];
     $scope.data = [];
 	$scope.error = false;
+	$scope.success = false;
 	$scope.errorDesc = '';
 
 	$scope.populateCountries = function() {
@@ -390,10 +391,15 @@ function registerCtrl ($scope, $http) {
 			}
 	    }).success(function (result) {
 	    	console.log(result);
+			$scope.error = false;
+			$scope.success = true;
+			grecaptcha.reset();
 	    }).
 	    error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
 	    	$scope.displayError(data.Error);
+			$scope.success = false;
+			grecaptcha.reset();
 	    });
 	}
 }

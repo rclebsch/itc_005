@@ -68,8 +68,7 @@ def contacts(request):
         country_id = 0
         border_id = 0
         afiliation_id = 0
-        offset = 0
-        count = 25
+        is_individual = False
     query = Contact.objects
     if category_id > 0:
         query = query.filter(contactCategory=category_id)
@@ -263,18 +262,19 @@ def register(request):
             contact.firstName = body['contact']['firstName']
             contact.lastName = body['contact']['lastName']
             contact.activityFree = body['contact']['activityFree']
-            if int(body['contact']['activityFromList']) > 0:
+            if (not body['contact']['activityFromList'] is None) and (int(body['contact']['activityFromList']) > 0):
                 contact.activityFromList = ContactActivity.objects.get(
                     contactActivityId=body['contact']['activityFromList'])
             contact.contactAfiliationFree = body['contact']['afiliationFree']
-            if int(body['contact']['afiliationFromList']) > 0:
+            if (not body['contact']['afiliationFromList'] is None) and (int(body['contact']['afiliationFromList'])) > 0:
                 contact.contactAfiliationFromList = ContactAfiliation.objects.get(
                     contactAfiliationId=body['contact']['afiliationFromList'])
         else:
             contact.organizationName = body['contact']['organizationName']
 
         contact.borderLocationFree = body['contact']['borderLocationFree']
-        if int(body['contact']['borderLocationFromList']) > 0:
+        if (not body['contact']['borderLocationFromList'] is None) and \
+                (int(body['contact']['borderLocationFromList']) > 0):
             contact.borderLocationFromList = Border.objects.get(borderId=body['contact']['borderLocationFromList'])
         contact.contactCountry = Country.objects.get(countryId=body['contact']['contactCountry'])
         contact.phoneLocalNumber = body['contact']['phoneLocalNumber']
@@ -283,7 +283,7 @@ def register(request):
 
         try:
             contact.full_clean()
-            # contact.save()
+            contact.save()
         except ValidationError as e:
             return HttpResponse(status=400,
                                 content='{"Error": "Invalid contact data: ' + e.__str__() + '"}',

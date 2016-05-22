@@ -2057,6 +2057,11 @@ div.PBViewing{float:none}
     font-size: 14px;
 }
 
+.register-success {
+    color: green;
+    font-size: 24px;
+}
+
 .resource-first-page {
     max-width: 30%;
 }
