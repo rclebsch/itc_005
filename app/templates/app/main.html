@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
 <head id="ctl00_Head1">
+    <script src="{% static 'app/js/angular/angular.js' %}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
     <meta name="HandheldFriendly" content="true"/>
     <meta charset="utf-8"/>
@@ -28,7 +29,8 @@
     {% include "app/header-top-desktop.html" %}
     {% include "app/header-mid.html"%}
     <section class="wrapper clearfix">
-        <div class="row clearfix" ng-controller="titleCtrl" ng-init="init()">
+        <div class="row clearfix" ng-controller="titleCtrl">
+            <input type="button" value="Register" class="register" ng-click="changeContent('section-resources')"/>
             <div class="page-top-hld clearfix">
                 <div class="col-md-2"></div>
                 <div class="col-md-7">
@@ -61,7 +63,6 @@
 </script>
 </body>
 <script src="{% static 'app/js/jquery.min.js' %}"></script>
-<script src="{% static 'app/js/angular/angular.js' %}"></script>
 <script src="{% static 'app/js/angular/angular-route.js' %}"></script>
 <script src="{% static 'app/js/angular/ngTable/ng-table.js' %}"></script>
 <script src="{% static 'app/js/angular/angular-animate.js' %}"></script>

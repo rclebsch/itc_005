@@ -5,19 +5,19 @@
                 <div class="widget">
                     <div>
                         <div class="content">
-                            <div ng-show="isVisible('section-the-project')" class="animate-show animate-hide">
+                            <div ng-show="isVisible('section-the-project')" ng-cloak class="animate-show animate-hide">
                                 {% include "app/content-the-project.html" %}
                             </div>
-                            <div ng-show="isVisible('section-edirectory')" class="animate-show animate-hide">
-                                {% include "app/content-edirectory.html"%}
+                            <div ng-show="isVisible('section-edirectory')" ng-cloak class="animate-show animate-hide">
+                                {% include "app/content-edirectory.html" %}
                             </div>
-                            <div ng-show="isVisible('section-contacts')" class="animate-show animate-hide">
+                            <div ng-show="isVisible('section-contacts')" ng-cloak class="animate-show animate-hide">
                                 {% include "app/content-contacts.html"%}
                             </div>
-                            <div ng-show="isVisible('section-resources')" class="animate-show animate-hide">
+                            <div ng-show="isVisible('section-resources')" ng-cloak class="animate-show animate-hide">
                                 {% include "app/content-resources.html"%}
                             </div>
-                            <div ng-show="isVisible('section-events')" class="animate-show animate-hide">
+                            <div ng-show="isVisible('section-events')" ng-cloak class="animate-show animate-hide">
                                 {% include "app/content-events.html"%}
                             </div>
                         </div>
