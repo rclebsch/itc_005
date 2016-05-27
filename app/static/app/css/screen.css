@@ -2062,6 +2062,10 @@ div.PBViewing{float:none}
     font-size: 24px;
 }
 
+.g-recaptcha {
+    height: 115px;
+}
+
 .resource-first-page {
     max-width: 15%;
 }
