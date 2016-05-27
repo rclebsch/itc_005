@@ -8,8 +8,7 @@
             <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'select' }" filter-data="borders">{[{contact.borderLocationFromList}]}</td>
             <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'select' }" filter-data="countries">{[{contact.contactCountry}]}</td>
             <td data-title="'Afiliation'" sortable="'contactAfiliationFromList'" filter="{ 'contactAfiliationFromList': 'select' }" filter-data="afiliations">{[{contact.contactAfiliationFromList}]}</td>
-            <td data-title="'Phone Nr'" sortable="'phoneLocalNumber'" filter="{ 'phoneLocalNumber': 'text' }">+{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}</td>
-            <td data-title="'E-Mail'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</td>
+            <td data-title="'Contact Info'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</br>+{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}</td>
         </tr>
     </table>
 </section>
