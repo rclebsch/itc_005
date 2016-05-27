@@ -40,6 +40,17 @@ eacApp.directive('defaultFirstPage', function() {
   }
 });
 
+eacApp.directive('ngElevateZoom', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.attr('data-zoom-image',attrs.zoomImage);
+            if (attrs.ngSrc != "") {
+                $(element).elevateZoom();
+            }
+        }
+    };
+});
 
 eacApp.controller('eventBubbleCtrl', function ($scope, $http) {
 	$scope.initialized = false;

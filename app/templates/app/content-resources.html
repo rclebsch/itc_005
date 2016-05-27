@@ -6,7 +6,12 @@
             <td data-title="'Language'" sortable="'language'" filter="{ 'language': 'text' }">{[{resource.language}]}</td>
             <td data-title="'Details'" filter="{ 'title': 'text' }">
                 <a target="_blank" ng-href="{[{resource.pdfFile}]}">
-                    <img default-first-page="/static/app/images/itc-downloads.png" ng-src="{[{resource.firstPagePicture}]}" class="resource-first-page"/>
+                     <img ng-elevate-zoom
+                          default-first-page="/static/app/images/itc-downloads.png"
+                          ng-src="{[{resource.firstPagePicture}]}"
+                          class="resource-first-page"
+                          zoom-image="{[{resource.firstPagePicture}]}"
+                     />
                 </a>
                 <div class="resource-details">
                     <b>{[{resource.title}]}</b><br/>
