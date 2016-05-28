@@ -296,8 +296,8 @@ span.customSelect.changed{background-color:#f0dea4}
 
 .menu-left li a:hover, .menu-left li a.active{background:none repeat scroll 0 0 #3081C8; color:#FFF}
 .menu-left li ul{margin:5px 0; padding:0}
-.menu-left li ul li{border-bottom:none; padding:0}
-.menu-left li ul li a{text-transform:capitalize}
+.menu-left li ul li{border-bottom:none; padding-left:14px}
+.menu-left li ul li a{font-size:13px}
 .menu-left-sub li a{padding-left:14px}
 .menu-left-sub li ul li a{padding-left:20px}
 .menu-left-sub li ul li ul li a{padding-left:24px}

@@ -74,6 +74,37 @@ eacApp.controller('eventBubbleCtrl', function ($scope, $http) {
 	};
 });
 
+eacApp.controller('theProjectContentCtrl', theProjectContentCtrl);
+
+function theProjectContentCtrl ($scope) {
+	$scope.initialized = false;
+
+    $scope.$on('changeContent', function(event, data) {
+        if(data == 'section-the-project') {
+            $scope.init();
+        }
+    });
+
+	$scope.init = function(){
+		console.log('theProjectContentCtrl.init');
+		if ($scope.initialized) {
+			return;
+		}
+        $scope.initialized = true;
+	};
+
+    $scope.$emit('controllerReady', {
+        id:'section-the-project',
+        title: 'The Project',
+        extendedTitle: 'Project',
+        subItems:[
+            {title:'sub-title1', bookmark:'bookmark1'},
+            {title:'sub-title2', bookmark:'bookmark2'},
+            {title:'sub-title3', bookmark:'bookmark3'}
+        ]
+    });
+}
+
 
 eacApp.controller('eventsContentCtrl', eventsContentCtrl);
 
@@ -490,15 +521,11 @@ function registerCtrl ($scope, $http) {
 }
 
 
-eacApp.controller('titleCtrl', function ($scope, $rootScope, $location, $rootScope) {
+eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope) {
     $scope.title = 'The Project';
     $scope.initialSection = null;
     $scope.currentSection = null;
-	$scope.sections = {
-		'section-the-project': {
-			title: 'The Project',
-			extendedTitle: 'The Project' }
-	};
+	$scope.sections = {};
 
 	$scope.changeContent = function(id) {
 		console.log('changeContent: ' + id);
@@ -534,7 +561,6 @@ eacApp.controller('titleCtrl', function ($scope, $rootScope, $location, $rootSco
         $scope.initialSection = $location.search()['s'];
         if ($scope.initialSection == null) {
             $scope.initialSection = 'section-the-project';
-            $scope.routeUrl($scope.initialSection);
         }
 	};
 
@@ -545,4 +571,8 @@ eacApp.controller('titleCtrl', function ($scope, $rootScope, $location, $rootSco
         $scope.sections[data.id] = data;
         $scope.routeUrl(data.id);
     });
+
+    $scope.scrollTo = function (id) {
+        $anchorScroll(id);
+    };
 });
