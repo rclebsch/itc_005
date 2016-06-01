@@ -14,7 +14,7 @@
                                             <li>
                                                 <a href="#" ng-click="changeContent(id)">{[{section.title}]}</a>
                                                 <ul ng-repeat="subItem in section.subItems"  ng-show="id == currentSection">
-                                                    <li><a href="" ng-click="scrollTo(subItem.bookmark)">{[{subItem.title}]}</a></li>
+                                                    <li><a href="" ng-click="subMenuAction({bookmark:subItem.bookmark, filter:subItem.filter})">{[{subItem.title}]}</a></li>
                                                  </ul>
                                             </li>
                                         </ul>

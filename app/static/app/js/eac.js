@@ -78,6 +78,16 @@ eacApp.controller('theProjectContentCtrl', theProjectContentCtrl);
 
 function theProjectContentCtrl ($scope) {
 	$scope.initialized = false;
+    $scope.menuStructure = {
+        id:'section-the-project',
+        title: 'The Project',
+        extendedTitle: 'Project',
+        subItems:[
+            {title:'sub-title1', bookmark:'bookmark1'},
+            {title:'sub-title2', bookmark:'bookmark2'},
+            {title:'sub-title3', bookmark:'bookmark3'}
+        ]
+    };
 
     $scope.$on('changeContent', function(event, data) {
         if(data == 'section-the-project') {
@@ -93,18 +103,8 @@ function theProjectContentCtrl ($scope) {
         $scope.initialized = true;
 	};
 
-    $scope.$emit('controllerReady', {
-        id:'section-the-project',
-        title: 'The Project',
-        extendedTitle: 'Project',
-        subItems:[
-            {title:'sub-title1', bookmark:'bookmark1'},
-            {title:'sub-title2', bookmark:'bookmark2'},
-            {title:'sub-title3', bookmark:'bookmark3'}
-        ]
-    });
+    $scope.$emit('controllerReady', $scope.menuStructure);
 }
-
 
 eacApp.controller('eventsContentCtrl', eventsContentCtrl);
 
@@ -112,6 +112,10 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	$scope.initialized = false;
 	$scope.events = [];
     $scope.data = [];
+    $scope.menuStructure = {
+        id:'section-events',
+        title: 'Events in EAC',
+        extendedTitle: 'Events: training and participation to Trade Fairs'};
     $scope.eventsTable = new ngTableParams({
                 page: 1,
                 count: 10
@@ -151,10 +155,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    });
 	};
 
-    $scope.$emit('controllerReady', {
-        id:'section-events',
-        title: 'Events in EAC',
-        extendedTitle: 'Events: training and participation to Trade Fairs'});
+    $scope.$emit('controllerReady', $scope.menuStructure);
 }
 
 eacApp.controller('eDirectoryContentCtrl', eDirectoryContentCtrl);
@@ -163,6 +164,10 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 	$scope.initialized = false;
 	$scope.contacts = [];
     $scope.data = [];
+    $scope.menuStructure = {
+        id:'section-edirectory',
+        title: 'Women EAC Network Directory',
+        extendedTitle: 'The Women EAC Network: the E-Directory of women owned firms'};
     $scope.countries = [];
     $scope.borders = [];
     $scope.afiliations = [];
@@ -240,10 +245,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 		});
 	};
 
-    $scope.$emit('controllerReady', {
-        id:'section-edirectory',
-        title: 'Women EAC Network Directory',
-        extendedTitle: 'The Women EAC Network: the E-Directory of women owned firms'});
+    $scope.$emit('controllerReady', $scope.menuStructure);
 }
 
 eacApp.controller('contactsContentCtrl', contactsContentCtrl);
@@ -252,6 +254,13 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	$scope.initialized = false;
 	$scope.contacts = [];
     $scope.data = [];
+    $scope.countries = [];
+    $scope.borders = [];
+    $scope.categories = [];
+    $scope.menuStructure = {
+        id:'section-contacts',
+        title: 'EAC Business Contacts',
+        extendedTitle: 'Contacts: Trade Support Institutions, Women Associations, Trade Hubs, and Border Agencies in EAC'};
     $scope.contactsTable = new ngTableParams({
                 page: 1,
                 count: 10
@@ -273,6 +282,40 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
         }
     });
 
+    $scope.$on('filter', function(event, data) {
+        if(data.section == 'section-contacts') {
+            angular.extend($scope.contactsTable.filter(), {contactCategory:data.filter});
+        }
+    });
+
+	$scope.buildFilters = function(result) {
+        var countriesHash = [];
+        var bordersHash = [];
+        var categoriesHash = [];
+        result.forEach(function(contact) {
+            if(countriesHash.indexOf(contact.contactCountry) < 0) {
+                countriesHash.push(contact.contactCountry);
+                $scope.countries.push({id:contact.contactCountry, title:contact.contactCountry});
+            }
+            if(bordersHash.indexOf(contact.borderLocationFromList) < 0) {
+                bordersHash.push(contact.borderLocationFromList);
+                $scope.borders.push({id:contact.borderLocationFromList, title:contact.borderLocationFromList});
+            }
+            if(categoriesHash.indexOf(contact.contactCategory) < 0) {
+                categoriesHash.push(contact.contactCategory);
+                $scope.categories.push({id:contact.contactCategory, title:contact.contactCategory});
+            }
+        });
+    };
+
+	$scope.buildSubMenus = function() {
+		var subItems = [];
+		$scope.categories.forEach(function(category){
+            subItems.push({title:category.id, filter:category.id});
+        });
+		$scope.menuStructure.subItems = subItems;
+	};
+
 	$scope.init = function(){
 		console.log('contactsContentCtrl.init');
 		if ($scope.initialized) {
@@ -285,16 +328,16 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.contacts = result;
             $scope.contactsTable.reload();
 			$scope.initialized = true;
+			$scope.buildFilters(result);
+			$scope.buildSubMenus();
+            $scope.$emit('controllerReady', $scope.menuStructure);
 	    }).
 	    error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
 	    });
 	};
 
-    $scope.$emit('controllerReady', {
-        id:'section-contacts',
-        title: 'EAC Business Contacts',
-        extendedTitle: 'Contacts: Trade Support Institutions, Women Associations, Trade Hubs, and Border Agencies in EAC'});
+    $scope.$emit('controllerReady', $scope.menuStructure);
 }
 
 eacApp.controller('resourcesContentCtrl', resourcesContentCtrl);
@@ -303,6 +346,12 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
 	$scope.initialized = false;
 	$scope.resources = [];
     $scope.data = [];
+    $scope.menuStructure = {
+        id:'section-resources',
+        title: 'Publications, Resources and downloads',
+        extendedTitle: 'Resources: Agricultural Model Contracts, Tools and training materials'};
+    $scope.categories = [];
+    $scope.languages = [];
     $scope.resourcesTable = new ngTableParams({
                 page: 1,
                 count: 10
@@ -324,6 +373,35 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
         }
     });
 
+    $scope.$on('filter', function(event, data) {
+        if(data.section == 'section-resources') {
+            angular.extend($scope.resourcesTable.filter(), {resourceCategory:data.filter});
+        }
+    });
+
+	$scope.buildFilters = function(result) {
+        var languagesHash = [];
+        var categoriesHash = [];
+        result.forEach(function(contact) {
+            if(languagesHash.indexOf(contact.language) < 0) {
+                languagesHash.push(contact.language);
+                $scope.languages.push({id:contact.language, title:contact.language});
+            }
+            if(categoriesHash.indexOf(contact.resourceCategory) < 0) {
+                categoriesHash.push(contact.resourceCategory);
+                $scope.categories.push({id:contact.resourceCategory, title:contact.resourceCategory});
+            }
+        });
+    };
+
+    $scope.buildSubMenus = function() {
+		var subItems = [];
+		$scope.categories.forEach(function(category){
+            subItems.push({title:category.id, filter:category.id});
+        });
+		$scope.menuStructure.subItems = subItems;
+	};
+
 	$scope.init = function(){
 		console.log('resourcesContentCtrl.init');
 		if ($scope.initialized) {
@@ -336,16 +414,16 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.resources = result;
             $scope.resourcesTable.reload();
 			$scope.initialized = true;
+            $scope.buildFilters(result);
+            $scope.buildSubMenus();
+            $scope.$emit('controllerReady', $scope.menuStructure);
 	    }).
 	    error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
 	    });
 	};
 
-    $scope.$emit('controllerReady', {
-        id:'section-resources',
-        title: 'Publications, Resources and downloads',
-        extendedTitle: 'Resources: Agricultural Model Contracts, Tools and training materials'});
+    $scope.$emit('controllerReady', $scope.menuStructure);
 }
 
 
@@ -572,7 +650,11 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
         $scope.routeUrl(data.id);
     });
 
-    $scope.scrollTo = function (id) {
-        $anchorScroll(id);
+    $scope.subMenuAction = function (action) {
+        if (action.bookmark != null) {
+            $anchorScroll(action.bookmark);
+        } else if (action.filter != null) {
+            $rootScope.$broadcast('filter', {section:$scope.currentSection, filter:action.filter});
+        }
     };
 });
