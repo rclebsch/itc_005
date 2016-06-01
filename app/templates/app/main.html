@@ -3,6 +3,10 @@
 <html>
 <head id="ctl00_Head1">
     <script src="{% static 'app/js/angular/angular.js' %}"></script>
+    <script>
+        var GA_ACCOUNT = '{{ settings.GA_ACCOUNT  }}';
+    </script>
+    <script src="{% static 'app/js/google-analitics.js' %}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
     <meta name="HandheldFriendly" content="true"/>
     <meta charset="utf-8"/>

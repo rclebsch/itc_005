@@ -86,7 +86,8 @@ def contacts(request):
         query = query.filter(contactAfiliationFromList=afiliation_id)
     if is_individual:
         object_list = simplify_data(
-            query.filter(contactStatus=2).order_by('lastName', 'firstName'),
+            query.filter(contactStatus=2, contactCategory__isIndividual=True).order_by(
+                'lastName', 'firstName'),
             ['fk__contactCategory', 'firstName', 'lastName',
              'fk__activityFromList', 'fk__borderLocationFromList', 'fk__contactAfiliationFromList',
              'fk__contactCountry', 'fk__contactCountry__phonePrefix', 'phoneLocalNumber', 'email'])

@@ -238,6 +238,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 	};
 
 	$scope.openRegister = function() {
+        ga('send', 'event', 'open-register');
 		ngDialog.open({
 			template: 'registerId',
 			controller: 'registerCtrl',
@@ -426,7 +427,6 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
     $scope.$emit('controllerReady', $scope.menuStructure);
 }
 
-
 eacApp.controller('registerCtrl', registerCtrl);
 
 function registerCtrl ($scope, $http) {
@@ -587,6 +587,7 @@ function registerCtrl ($scope, $http) {
 	    	console.log(result);
 			$scope.error = false;
 			$scope.success = true;
+            ga('send', 'event', 'successful-register');
 			grecaptcha.reset();
 	    }).
 	    error(function(data, status, headers, config){
@@ -597,7 +598,6 @@ function registerCtrl ($scope, $http) {
 	    });
 	}
 }
-
 
 eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope) {
     $scope.title = 'The Project';
@@ -610,6 +610,7 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 		$scope.currentSection = id;
 		$scope.title = $scope.sections[id].extendedTitle;
         $rootScope.$broadcast('changeContent', id);
+        ga('send', 'event', id);
 	};
 
 	$scope.isVisible = function(id) {
