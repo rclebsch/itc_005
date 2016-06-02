@@ -11,42 +11,17 @@
         operators, also impacting positively on the business environment.</p>
 
     <p>The E-Directory gathers and disseminates not only Women business information open to members and non-members but
-        also the most useful contact details and focal point in EAC region of:</p>
+        also the most useful contact details and focal point in EAC region.</p>
 
-    <ul>
-        <li>National Trade Support Institutions (TSIs)</li>
-        <li>Women Associations at-the- border</li>
-        <li>Trade Services Hubs</li>
-        <li>Joint Border Committees (JBCs)</li>
-        <li>National Border and Regulatory Agencies at the border</li>
-        <li>National Women Associations</li>
-        <li>Full list of Women Trading across border in EAC</li>
-        <li>Logistic Service Providers in EAC</li>
-    </ul>
     <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="contact in data">
-            <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}
-            </td>
-            <td data-title="'First Name'" sortable="'firstName'" filter="{ 'firstName': 'text' }">
-                {[{contact.firstName}]}
-            </td>
-            <td data-title="'Activity & Products'" sortable="'activityFromList'"
-                filter="{ 'activityFromList': 'select' }" filter-data="activities">{[{contact.activityFromList}]}
-            </td>
-            <td data-title="'Border'" sortable="'borderLocationFromList'"
-                filter="{ 'borderLocationFromList': 'select' }" filter-data="borders">
-                {[{contact.borderLocationFromList}]}
-            </td>
-            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'select' }"
-                filter-data="countries">{[{contact.contactCountry}]}
-            </td>
-            <td data-title="'Afiliation'" sortable="'contactAfiliationFromList'"
-                filter="{ 'contactAfiliationFromList': 'select' }" filter-data="afiliations">
-                {[{contact.contactAfiliationFromList}]}
-            </td>
-            <td data-title="'Contact Info'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</br>
-                +{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}
-            </td>
+            <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}</td>
+            <td data-title="'First Name'" sortable="'firstName'" filter="{ 'firstName': 'text' }">{[{contact.firstName}]}</td>
+            <td data-title="'Activity & Products'" sortable="'activityFromList'" filter="{ 'activityFromList': 'select' }" filter-data="activities">{[{contact.activityFromList}]}</td>
+            <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'select' }" filter-data="borders">{[{contact.borderLocationFromList}]}</td>
+            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'select' }" filter-data="countries">{[{contact.contactCountry}]}</td>
+            <td data-title="'Afiliation'" sortable="'contactAfiliationFromList'" filter="{ 'contactAfiliationFromList': 'select' }" filter-data="afiliations">{[{contact.contactAfiliationFromList}]}</td>
+            <td data-title="'Contact Info'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</br>+{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}</td>
         </tr>
     </table>
 </section>
