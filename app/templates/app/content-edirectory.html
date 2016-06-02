@@ -1,7 +1,20 @@
-<section id="eDirectoryController"  ng-controller="eDirectoryContentCtrl">
+<section id="eDirectoryController" ng-controller="eDirectoryContentCtrl">
     <input type="button" value="Register" class="register" ng-click="openRegister()"/>
+
+    <p>ITC and Women associations launched the Women EAC Business E-Directory. This tool is an interactive online
+        directory of business Women engaged in cross border trade in EAC.</p>
+
+    <p>Cross-border trade carried out by Women in EAC region involved mainly agricultural products and other
+        manufactured goods. Import and Export activities are seasonal and take place in the main EAC trading corridors.
+        Facilitating business information and contacts among Women facilitates trading by reducing the need to move to
+        one region to another to find tradable goods and while increasing intra-regional trade and trust among
+        operators, also impacting positively on the business environment.</p>
+
+    <p>The E-Directory gathers and disseminates not only Women business information open to members and non-members but
+        also the most useful contact details and focal point in EAC region.</p>
+
     <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
-  	    <tr ng-repeat="contact in data">
+        <tr ng-repeat="contact in data">
             <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}</td>
             <td data-title="'First Name'" sortable="'firstName'" filter="{ 'firstName': 'text' }">{[{contact.firstName}]}</td>
             <td data-title="'Activity & Products'" sortable="'activityFromList'" filter="{ 'activityFromList': 'select' }" filter-data="activities">{[{contact.activityFromList}]}</td>

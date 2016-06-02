@@ -81,11 +81,12 @@ function theProjectContentCtrl ($scope) {
     $scope.menuStructure = {
         id:'section-the-project',
         title: 'The Project',
-        extendedTitle: 'Project',
+        extendedTitle: 'Trade facilitation support for women cross-border traders and MSMEs in East African Community (EAC)',
         subItems:[
-            {title:'sub-title1', bookmark:'bookmark1'},
-            {title:'sub-title2', bookmark:'bookmark2'},
-            {title:'sub-title3', bookmark:'bookmark3'}
+            {title:'Mission', bookmark:'bookmark1'},
+            {title:'Objectives', bookmark:'bookmark2'},
+            {title:'Results and achievements', bookmark:'bookmark3'},
+            {title:'Success Stories', bookmark:'bookmark4'}
         ]
     };
 
@@ -166,8 +167,8 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
     $scope.data = [];
     $scope.menuStructure = {
         id:'section-edirectory',
-        title: 'Women EAC Network Directory',
-        extendedTitle: 'The Women EAC Network: the E-Directory of women owned firms'};
+        title: 'The Women EAC Trade & Logistics Network',
+        extendedTitle: 'The E-Directory of Women owned firms & Logistic Service Providers (LSPs) in EAC'};
     $scope.countries = [];
     $scope.borders = [];
     $scope.afiliations = [];
@@ -600,7 +601,7 @@ function registerCtrl ($scope, $http) {
 }
 
 eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope) {
-    $scope.title = 'The Project';
+    $scope.title = 'THE PROJECT';
     $scope.initialSection = null;
     $scope.currentSection = null;
 	$scope.sections = {};
