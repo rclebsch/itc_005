@@ -611,6 +611,7 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 		$scope.currentSection = id;
 		$scope.title = $scope.sections[id].extendedTitle;
         $rootScope.$broadcast('changeContent', id);
+        $(window).scrollTop(0);
         ga('send', 'event', id);
 	};
 
