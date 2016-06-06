@@ -1,10 +1,10 @@
 <section id="contactsController" ng-controller="contactsContentCtrl">
     <table ng-table="contactsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="contact in data">
-            <td data-title="'Category'" sortable="'contactCategory'" filter="{ 'contactCategory': 'select' }" filter-data="categories">{[{contact.contactCategory}]}</td>
-            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'select' }" filter-data="countries">{[{contact.contactCountry}]}</td>
-            <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'select' }" filter-data="borders">{[{contact.borderLocationFromList}]}</td>
-            <td data-title="'Organization'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.organizationName}]}</td>
+            <td data-title="'Category'" sortable="'contactCategory'" filter="{ 'contactCategory': 'type-ahead' }" filter-data="categories">{[{contact.contactCategory}]}</td>
+            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'type-ahead' }" filter-data="countries">{[{contact.contactCountry}]}</td>
+            <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'type-ahead' }" filter-data="borders">{[{contact.borderLocationFromList}]}</td>
+            <td data-title="'Organization'" sortable="'organizationName'" filter="{ 'organizationName': 'text' }">{[{contact.organizationName}]}</td>
             <td data-title="'Phone Nr'" sortable="'phoneLocalNumber'" filter="{ 'phoneLocalNumber': 'text' }">+{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}</td>
             <td data-title="'E-Mail'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</td>
         </tr>

@@ -1,9 +1,9 @@
-var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate','ngDialog']);
+var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate','ngDialog','ui.bootstrap']);
 
 eacApp.run(['$templateCache', function($templateCache) {
-    $templateCache.put('ng-table/filters/text.html', '<input placeholder="select filter" type="text" name="{{name}}" ng-disabled="$filterRow.disabled" ng-model="params.filter()[name]" ng-if="filter == \'text\'" class="input-filter form-control" />');
-}
-]);
+    $templateCache.put('ng-table/filters/text.html',       '<input type="text" placeholder="Type filter" ng-model="params.filter()[name]" name="{{name}}" ng-disabled="$filterRow.disabled" ng-if="filter == \'text\'" class="input-filter form-control" />');
+    $templateCache.put('ng-table/filters/type-ahead.html', '<input type="text" placeholder="Type filter" ng-model="params.filter()[name]" name="{{name}}" ng-table-select-filter-ds="$column" uib-typeahead="data.title for data in $selectData | filter:$viewValue | limitTo:8"  class="filter filter-select form-control">');
+}]);
 
 eacApp.config(function($interpolateProvider) {
 	$interpolateProvider.startSymbol('{[{');

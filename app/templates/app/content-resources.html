@@ -2,8 +2,8 @@
     <p>List of all resources</p>
     <table ng-table="resourcesTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="resource in data">
-            <td data-title="'Category'" sortable="'resourceCategory'" filter="{ 'resourceCategory': 'select' }" filter-data="categories">{[{resource.resourceCategory}]}</td>
-            <td data-title="'Language'" sortable="'language'" filter="{ 'language': 'select' }" filter-data="languages">{[{resource.language}]}</td>
+            <td data-title="'Category'" sortable="'resourceCategory'" filter="{ 'resourceCategory': 'type-ahead' }" filter-data="categories">{[{resource.resourceCategory}]}</td>
+            <td data-title="'Language'" sortable="'language'" filter="{ 'language': 'type-ahead' }" filter-data="languages">{[{resource.language}]}</td>
             <td data-title="'Details'" filter="{ 'title': 'text' }">
                 <a target="_blank" ng-href="{[{resource.pdfFile}]}">
                      <img ng-elevate-zoom

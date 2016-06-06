@@ -17,10 +17,10 @@
         <tr ng-repeat="contact in data">
             <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}</td>
             <td data-title="'First Name'" sortable="'firstName'" filter="{ 'firstName': 'text' }">{[{contact.firstName}]}</td>
-            <td data-title="'Activity & Products'" sortable="'activityFromList'" filter="{ 'activityFromList': 'select' }" filter-data="activities">{[{contact.activityFromList}]}</td>
-            <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'select' }" filter-data="borders">{[{contact.borderLocationFromList}]}</td>
-            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'select' }" filter-data="countries">{[{contact.contactCountry}]}</td>
-            <td data-title="'Afiliation'" sortable="'contactAfiliationFromList'" filter="{ 'contactAfiliationFromList': 'select' }" filter-data="afiliations">{[{contact.contactAfiliationFromList}]}</td>
+            <td data-title="'Activity & Products'" sortable="'activityFromList'" filter="{ 'activityFromList': 'type-ahead' }" filter-data="activities">{[{contact.activityFromList}]}</td>
+            <td data-title="'Border'" sortable="'borderLocationFromList'" filter="{ 'borderLocationFromList': 'type-ahead' }" filter-data="borders">{[{contact.borderLocationFromList}]}</td>
+            <td data-title="'Country'" sortable="'contactCountry'" filter="{ 'contactCountry': 'type-ahead' }" filter-data="countries">{[{contact.contactCountry}]}</td>
+            <td data-title="'Afiliation'" sortable="'contactAfiliationFromList'" filter="{ 'contactAfiliationFromList': 'type-ahead' }" filter-data="afiliations">{[{contact.contactAfiliationFromList}]}</td>
             <td data-title="'Contact Info'" sortable="'email'" filter="{ 'email': 'text' }">{[{contact.email}]}</br>+{[{contact.phonePrefix}]} {[{contact.phoneLocalNumber}]}</td>
         </tr>
     </table>
