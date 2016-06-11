@@ -2,9 +2,9 @@
     <p>List of all events</p>
     <table ng-table="eventsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="event in data">
-            <td data-title="'Date'" sortable="'eventDate'" filter="{ 'eventDate': 'text' }" class="events-date" ng-bind="event.eventDate | date:'dd MMM. yyyy'"></td>
-            <td data-title="'Country'" sortable="'eventCountry'" filter="{ 'eventCountry': 'text' }">{[{event.eventCountry}]}</td>
-            <td data-title="'Location'" sortable="'eventLocation'" filter="{ 'eventLocation': 'text' }">{[{event.eventLocation}]}</td>
+            <td data-title="'Date'" sortable="'eventDate'" filter="{ 'eventDate': 'type-ahead' }" filter-data="dates" class="events-date" ng-bind="event.eventDate | date:'dd MMM. yyyy'"></td>
+            <td data-title="'Country'" sortable="'eventCountry'" filter="{ 'eventCountry': 'type-ahead' }" filter-data="countries">{[{event.eventCountry}]}</td>
+            <td data-title="'Location'" sortable="'eventLocation'" filter="{ 'eventLocation': 'type-ahead' }" filter-data="locations">{[{event.eventLocation}]}</td>
             <td data-title="'Title'" sortable="'eventTitle'" filter="{ 'eventTitle': 'text' }">{[{event.eventTitle}]}</td>
             <td data-title="'Details'">
                 Contact:{[{event.contactInfo}]}<br/>

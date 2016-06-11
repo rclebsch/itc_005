@@ -113,6 +113,9 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	$scope.initialized = false;
 	$scope.events = [];
     $scope.data = [];
+    $scope.dates = [];
+    $scope.countries = [];
+    $scope.locations = [];
     $scope.menuStructure = {
         id:'section-events',
         title: 'Events in EAC',
@@ -138,6 +141,28 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
         }
     });
 
+    $scope.buildFilters = function(result) {
+        var datesHash = [];
+        var countriesHash = [];
+        var locationsHash = [];
+        result.forEach(function(event) {
+            if(countriesHash.indexOf(event.eventCountry) < 0) {
+                countriesHash.push(event.eventCountry);
+                $scope.countries.push({id:event.eventCountry, title:event.eventCountry});
+            }
+            var dateObj = new Date(event.eventDate);
+            var theDate = dateObj.getFullYear() + '-' + ('0' +(dateObj.getMonth()+1)).slice(-2);
+            if(datesHash.indexOf(theDate) < 0) {
+                datesHash.push(theDate);
+                $scope.dates.push({id:theDate, title:theDate});
+            }
+            if(locationsHash.indexOf(event.eventLocation) < 0) {
+                locationsHash.push(event.eventLocation);
+                $scope.locations.push({id:event.eventLocation, title:event.eventLocation});
+            }
+        });
+    };
+
 	$scope.init = function(){
 		console.log('eventsContentCtrl.init');
 		if ($scope.initialized) {
@@ -150,6 +175,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.events = result;
             $scope.eventsTable.reload();
 			$scope.initialized = true;
+            $scope.buildFilters(result);
 	    }).
 	    error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
