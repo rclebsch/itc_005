@@ -50,7 +50,7 @@ def simplify_data(data, fields):
 
 @require_http_methods(["GET"])
 def index(request):
-    return render(request, 'app/main.html', {'settings': settings})
+    return render(request, 'app/main.html', context={'settings': settings})
 
 
 @require_http_methods(["GET"])

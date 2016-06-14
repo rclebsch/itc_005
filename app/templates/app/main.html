@@ -1,22 +1,41 @@
 {% load staticfiles %}
+{% load compress %}
 <!doctype html>
 <html>
 <head id="ctl00_Head1">
-    <script src="{% static 'app/js/angular/angular.js' %}"></script>
-    <script>
-        var GA_ACCOUNT = '{{ settings.GA_ACCOUNT  }}';
-    </script>
-    <script src="{% static 'app/js/google-analitics.js' %}"></script>
+    {% if settings.DEBUG %}
+        <script src="{% static 'app/js/angular/angular.js' %}"></script>
+        <script>var GA_ACCOUNT = '{{ settings.GA_ACCOUNT  }}';</script>
+        <script src="{% static 'app/js/google-analitics.js' %}"></script>
+    {% else %}
+        {% compress js %}
+        <script src="{% static 'app/js/angular/angular.min.js' %}"></script>
+        <script>var GA_ACCOUNT = '{{ settings.GA_ACCOUNT  }}';</script>
+        <script src="{% static 'app/js/google-analitics.js' %}"></script>
+        {% endcompress %}
+    {% endif %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
     <meta name="HandheldFriendly" content="true"/>
     <meta charset="utf-8"/>
     <link rel="shortcut icon" href="{% static 'app/images/favicon.ico' %}" type="image/vnd.microsoft.icon"/>
+    {% if settings.DEBUG %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/screen.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/css/itc-screen.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/js/angular/ngTable/ng-table.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/js/angular/ngDialog/ngDialog.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/js/angular/ngDialog/ngDialog-theme-default.min.css' %}" />
+    {% else %}
+        {% compress css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/screen.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/itc-screen.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/js/angular/ngTable/ng-table.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/js/angular/ngDialog/ngDialog.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/js/angular/ngDialog/ngDialog-theme-default.min.css' %}" />
+        {% endcompress %}
+    {% endif %}
 
     <meta name="Keywords"
           content="International Trade Centre, ITC, WTO, World Trade Organization, small and medium-sized enterprises, e-commerce,
@@ -64,13 +83,27 @@
     {% include "app/register.html"%}
 </script>
 </body>
-<script src="{% static 'app/js/jquery.min.js' %}"></script>
-<script src="{% static 'app/js/jquery.elevatezoom.min.js' %}"></script>
-<script src="{% static 'app/js/angular/angular-route.js' %}"></script>
-<script src="{% static 'app/js/angular/ngTable/ng-table.js' %}"></script>
-<script src="{% static 'app/js/angular/angular-animate.js' %}"></script>
-<script src="{% static 'app/js/angular/ngDialog/ngDialog.js' %}"></script>
-<script src="{% static 'app/js/angular/ui-bootstrap-tpls-1.3.3.min.js'%}"></script>
-<script src="{% static 'app/js/menu-scroll.js' %}"></script>
-<script src="{% static 'app/js/eac.js' %}"></script>
+{% if settings.DEBUG %}
+    <script src="{% static 'app/js/jquery.min.js' %}"></script>
+    <script src="{% static 'app/js/jquery.elevatezoom.min.js' %}"></script>
+    <script src="{% static 'app/js/angular/angular-route.js' %}"></script>
+    <script src="{% static 'app/js/angular/ngTable/ng-table.js' %}"></script>
+    <script src="{% static 'app/js/angular/angular-animate.js' %}"></script>
+    <script src="{% static 'app/js/angular/ngDialog/ngDialog.js' %}"></script>
+    <script src="{% static 'app/js/angular/ui-bootstrap-tpls-1.3.3.min.js'%}"></script>
+    <script src="{% static 'app/js/menu-scroll.js' %}"></script>
+    <script src="{% static 'app/js/eac.js' %}"></script>
+{% else %}
+    {% compress js %}
+    <script src="{% static 'app/js/jquery.min.js' %}"></script>
+    <script src="{% static 'app/js/jquery.elevatezoom.min.js' %}"></script>
+    <script src="{% static 'app/js/angular/angular-route.min.js' %}"></script>
+    <script src="{% static 'app/js/angular/ngTable/ng-table.min.js' %}"></script>
+    <script src="{% static 'app/js/angular/angular-animate.min.js' %}"></script>
+    <script src="{% static 'app/js/angular/ngDialog/ngDialog.min.js' %}"></script>
+    <script src="{% static 'app/js/angular/ui-bootstrap-tpls-1.3.3.min.js'%}"></script>
+    <script src="{% static 'app/js/menu-scroll.js' %}"></script>
+    <script src="{% static 'app/js/eac.js' %}"></script>
+    {% endcompress %}
+{% endif %}
 </html>

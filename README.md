@@ -25,6 +25,7 @@ pip3 install --user mysqlclient
 pip3 install django
 pip3 install django-import-export
 pip3 install Pillow
+pip3 install django_compressor
 ~~~
 
 ## Deploy local
