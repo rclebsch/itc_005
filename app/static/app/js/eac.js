@@ -86,7 +86,8 @@ function theProjectContentCtrl ($scope) {
             {title:'Mission', bookmark:'bookmark1'},
             {title:'Objectives', bookmark:'bookmark2'},
             {title:'Results and achievements', bookmark:'bookmark3'},
-            {title:'Success Stories', bookmark:'bookmark4'}
+            {title:'Success Stories', bookmark:'bookmark4'},
+            {title:'Support us', bookmark:'bookmark5'}
         ]
     };
 
