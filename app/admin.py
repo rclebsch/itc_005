@@ -49,7 +49,8 @@ class ContactAdmin(ImportExportModelAdmin):
     readonly_fields = ('created', 'lastUpdate')
     list_display = ('__str__', 'contactCategory', 'contactCountry', 'borderLocationFromList', 'contactStatus',
                     'created', 'lastUpdate')
-    search_fields = ('__str__', 'borderLocationFromList')
+    search_fields = ['organizationName', 'lastName', 'firstName', 'contactCategory__contactCategoryName',
+                     'contactCountry__countryName', 'borderLocationFromList__borderName']
     list_filter = ('contactCategory', 'contactStatus')
     resource_class = ContactResource
 
@@ -82,7 +83,7 @@ admin.site.register(ResourceCategory, ResourceCategoryAdmin)
 class ResourceAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'lastUpdate')
     list_display = ('title', 'resourceCategory', 'language', 'created', 'lastUpdate')
-    search_fields = ('title',)
+    search_fields = ('title', 'resourceCategory__resourceCategoryName')
 
 admin.site.register(Resource, ResourceAdmin)
 
