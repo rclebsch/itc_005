@@ -70,3 +70,6 @@ media/resources/*
 
 # Settings files (create them based on the templates)
 itc_005/settings.py
+
+# Cached static files
+CACHE/*
