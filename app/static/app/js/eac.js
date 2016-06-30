@@ -80,7 +80,7 @@ function theProjectContentCtrl ($scope) {
 	$scope.initialized = false;
     $scope.menuStructure = {
         id:'section-the-project',
-        title: 'The Project',
+        title: 'About the project',
         extendedTitle: 'Trade facilitation support for women cross-border traders and MSMEs in East African Community (EAC)',
         subItems:[
             {title:'Mission', bookmark:'bookmark1'},
