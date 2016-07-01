@@ -289,13 +289,13 @@ span.customSelect.changed{background-color:#f0dea4}
 .latest-blogs li a:hover, .latest-blogs li a:hover span.date-blog-head{color:#3081c8}
 .latest-blogs li a span.date-blog-head{display:block; font-size:14px; color:#8090B1; font-weight:bold; line-height:1.5em}
 
-.menu-left{margin:0 0 15px 0; padding:0}
+.menu-left{margin:0 0 5px 0; padding:0}
 .menu-left li{display:block; margin:0; padding:0;  line-height:1.42857}
 .menu-left li:last-child{border-bottom:none}
 .menu-left li a{margin:0; padding:5px 10px 4px; font-size:14px; color:#5a5a5b;  display:block}
 
 .menu-left li a:hover, .menu-left li a.active{background:none repeat scroll 0 0 #3081C8; color:#FFF}
-.menu-left li ul{margin:5px 0; padding:0}
+.menu-left li ul{margin:0px 0; padding:0}
 .menu-left li ul li{border-bottom:none; padding-left:14px}
 .menu-left li ul li a{font-size:13px}
 .menu-left-sub li a{padding-left:14px}

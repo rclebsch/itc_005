@@ -2,7 +2,7 @@ var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate','ngDialog
 
 eacApp.run(['$templateCache', function($templateCache) {
     $templateCache.put('ng-table/filters/text.html',       '<input type="text" placeholder="Type filter" ng-model="params.filter()[name]" name="{{name}}" ng-disabled="$filterRow.disabled" ng-if="filter == \'text\'" class="input-filter form-control" />');
-    $templateCache.put('ng-table/filters/type-ahead.html', '<input type="text" placeholder="Type filter" ng-model="params.filter()[name]" name="{{name}}" ng-table-select-filter-ds="$column" uib-typeahead="data.title for data in $selectData | filter:$viewValue | limitTo:8"  class="filter filter-select form-control">');
+    $templateCache.put('ng-table/filters/type-ahead.html', '<input type="text" placeholder="Type filter" ng-model="params.filter()[name]" name="{{name}}" ng-table-select-filter-ds="$column" uib-typeahead="data.title for data in $selectData | filter:$viewValue | limitTo:100" typeahead-min-length="0" class="filter filter-select form-control">');
 }]);
 
 eacApp.config(function($interpolateProvider) {
@@ -162,6 +162,9 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
                 $scope.locations.push({id:event.eventLocation, title:event.eventLocation});
             }
         });
+        $scope.countries.sort(function(a, b){return a.title > b.title});
+        $scope.dates.sort(function(a, b){return a.title < b.title});
+        $scope.locations.sort(function(a, b){return a.title > b.title});
     };
 
 	$scope.init = function(){
@@ -245,6 +248,10 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
                 $scope.activities.push({id:contact.activityFromList, title:contact.activityFromList});
             }
         });
+        $scope.countries.sort(function(a, b){return a.title > b.title});
+        $scope.borders.sort(function(a, b){return a.title > b.title});
+        $scope.afiliations.sort(function(a, b){return a.title > b.title});
+        $scope.activities.sort(function(a, b){return a.title > b.title});
     };
 
 	$scope.init = function(){
@@ -335,6 +342,9 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
                 $scope.categories.push({id:contact.contactCategory, title:contact.contactCategory});
             }
         });
+        $scope.countries.sort(function(a, b){return a.title > b.title});
+        $scope.borders.sort(function(a, b){return a.title > b.title});
+        $scope.categories.sort(function(a, b){return a.title > b.title});
     };
 
 	$scope.buildSubMenus = function() {
@@ -421,6 +431,9 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
                 $scope.categories.push({id:contact.resourceCategory, title:contact.resourceCategory});
             }
         });
+        $scope.languages.sort(function(a, b){return a.title > b.title});
+        $scope.categories.sort(function(a, b){return a.title > b.title});
+
     };
 
     $scope.buildSubMenus = function() {
