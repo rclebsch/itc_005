@@ -668,7 +668,7 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 		});
         $scope.initialSection = $location.search()['s'];
         if ($scope.initialSection == null) {
-            $scope.initialSection = 'section-the-project';
+            $scope.initialSection = 'section-edirectory';
         }
 	};
 
