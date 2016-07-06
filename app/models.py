@@ -1,6 +1,10 @@
 ﻿from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.exceptions import ValidationError
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 class Country(models.Model):
@@ -212,7 +216,60 @@ class Contact(models.Model):
                 and (not self.contactAfiliationFree or (self.contactStatus.contactStatusId == self.APPROVED)):
             raise ValidationError('No afiliation specified')
 
+    def save(self, *args, **kwargs):
+        self.originalContactStatus = self.contactStatus
+        if self.pk is not None:
+            self.originalContactStatusId = Contact.objects.get(pk=self.pk).contactStatus.contactStatusId
+        super(Contact, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Contact'
         verbose_name_plural = 'Contacts'
         ordering = ['contactCategory', 'organizationName', 'lastName', 'firstName']
+
+
+# After the save of a Contact
+@receiver(post_save, sender=Contact)
+def send_registration_email(instance, created, **kwargs):
+    if created:
+        if instance.contactStatus.contactStatusId == Contact.NEW:
+            send_registration_received_email(instance)
+        elif instance.contactStatus.contactStatusId == Contact.APPROVED:
+            send_registration_approved_email(instance)
+    elif (instance.originalContactStatusId != instance.contactStatus.contactStatusId) \
+            and (instance.contactStatus.contactStatusId == Contact.APPROVED):
+        send_registration_approved_email(instance)
+
+
+def send_registration_received_email(contact):
+    body = contact.__str__() + \
+           '\n\nYour registration has been received.' + \
+           '\nYou will receive a new email once your registration is approved.' + \
+           '\n\n Kind regards,' + \
+           '\nThe EAC team'
+
+    send_email(
+        'Your registration has been approved',
+        body,
+        [contact.email]
+    )
+
+
+def send_registration_approved_email(contact):
+    body = contact.__str__() + \
+           '\n\n Your registration has been approved and you are now part of the EAC e-directory.' + \
+           '\n\n Kind regards,' + \
+           '\nThe EAC team'
+
+    send_email(
+        'Your registration has been approved',
+        body,
+        [contact.email]
+    )
+
+
+def send_email(subject, body, recipient_list):
+    if settings.DEBUG:
+        send_mail(subject, body, 'no-reply@eac.itc.org', settings.DEBUG_EMAIL_DESTINATIONS, fail_silently=False)
+    else:
+        send_mail(subject, body, 'no-reply@eac.itc.org', recipient_list, fail_silently=False)
