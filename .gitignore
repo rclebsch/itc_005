@@ -73,3 +73,4 @@ itc_005/settings.py
 
 # Cached static files
 CACHE/*
+app/static/CACHE/*
