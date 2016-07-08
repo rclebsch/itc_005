@@ -170,3 +170,13 @@ RECAPTCHA_KEY = 'the-key'
 
 #Google Analytics
 GA_ACCOUNT = 'UA-XXXXX-Y'
+
+#For email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'username@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEBUG_EMAIL_DESTINATIONS = ['admin@gmail.com']

@@ -1,0 +1,15 @@
+[uwsgi]
+project = eac
+base = /path/to/root/
+
+chdir = %(base)/webroot
+wsgi-file = %(base)/webroot/itc_005/wsgi.py
+
+master = true
+processes = 5
+
+socket = /var/run/%(project).sock
+chmod-socket = 664
+vacuum = true
+
+logto = /var/log/uwsgi/%n.log
