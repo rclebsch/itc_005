@@ -10,6 +10,12 @@ eacApp.config(function($interpolateProvider) {
 	$interpolateProvider.endSymbol('}]}');
 });
 
+function sortAlphabetically(a, b) {
+    if(a.title < b.title) return -1;
+    if(a.title > b.title) return 1;
+    return 0;
+}
+
 eacApp.config(['ngDialogProvider', function (ngDialogProvider) {
 			ngDialogProvider.setDefaults({
 				className: 'ngdialog-theme-default',
@@ -146,6 +152,9 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
         var datesHash = [];
         var countriesHash = [];
         var locationsHash = [];
+        $scope.dates.length = 0;
+        $scope.countries.length = 0;
+        $scope.locations.length = 0;
         result.forEach(function(event) {
             if(countriesHash.indexOf(event.eventCountry) < 0) {
                 countriesHash.push(event.eventCountry);
@@ -162,9 +171,9 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
                 $scope.locations.push({id:event.eventLocation, title:event.eventLocation});
             }
         });
-        $scope.countries.sort(function(a, b){return a.title > b.title});
-        $scope.dates.sort(function(a, b){return a.title < b.title});
-        $scope.locations.sort(function(a, b){return a.title > b.title});
+        $scope.countries.sort(sortAlphabetically);
+        $scope.dates.sort(sortAlphabetically);
+        $scope.locations.sort(sortAlphabetically);
     };
 
 	$scope.init = function(){
@@ -230,6 +239,10 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
         var bordersHash = [];
         var afiliationsHash = [];
         var activitiesHash = [];
+        $scope.countries.length = 0;
+        $scope.borders.length = 0;
+        $scope.afiliations.length = 0;
+        $scope.activities.length = 0;
         result.forEach(function(contact) {
             if(countriesHash.indexOf(contact.contactCountry) < 0) {
                 countriesHash.push(contact.contactCountry);
@@ -248,10 +261,10 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
                 $scope.activities.push({id:contact.activityFromList, title:contact.activityFromList});
             }
         });
-        $scope.countries.sort(function(a, b){return a.title > b.title});
-        $scope.borders.sort(function(a, b){return a.title > b.title});
-        $scope.afiliations.sort(function(a, b){return a.title > b.title});
-        $scope.activities.sort(function(a, b){return a.title > b.title});
+        $scope.countries.sort(sortAlphabetically);
+        $scope.borders.sort(sortAlphabetically);
+        $scope.afiliations.sort(sortAlphabetically);
+        $scope.activities.sort(sortAlphabetically);
     };
 
 	$scope.init = function(){
@@ -328,6 +341,9 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
         var countriesHash = [];
         var bordersHash = [];
         var categoriesHash = [];
+        $scope.countries.length = 0;
+        $scope.borders.length = 0;
+        $scope.categories.length = 0;
         result.forEach(function(contact) {
             if(countriesHash.indexOf(contact.contactCountry) < 0) {
                 countriesHash.push(contact.contactCountry);
@@ -342,9 +358,9 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
                 $scope.categories.push({id:contact.contactCategory, title:contact.contactCategory});
             }
         });
-        $scope.countries.sort(function(a, b){return a.title > b.title});
-        $scope.borders.sort(function(a, b){return a.title > b.title});
-        $scope.categories.sort(function(a, b){return a.title > b.title});
+        $scope.countries.sort(sortAlphabetically);
+        $scope.borders.sort(sortAlphabetically);
+        $scope.categories.sort(sortAlphabetically);
     };
 
 	$scope.buildSubMenus = function() {
@@ -421,6 +437,8 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
 	$scope.buildFilters = function(result) {
         var languagesHash = [];
         var categoriesHash = [];
+        $scope.categories.length = 0;
+        $scope.languages.length = 0;
         result.forEach(function(contact) {
             if(languagesHash.indexOf(contact.language) < 0) {
                 languagesHash.push(contact.language);
@@ -431,8 +449,8 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
                 $scope.categories.push({id:contact.resourceCategory, title:contact.resourceCategory});
             }
         });
-        $scope.languages.sort(function(a, b){return a.title > b.title});
-        $scope.categories.sort(function(a, b){return a.title > b.title});
+        $scope.languages.sort(sortAlphabetically);
+        $scope.categories.sort(sortAlphabetically);
 
     };
 
