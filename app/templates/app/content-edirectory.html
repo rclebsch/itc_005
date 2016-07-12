@@ -1,5 +1,4 @@
 <section id="eDirectoryController" ng-controller="eDirectoryContentCtrl">
-    <input type="button" value="Register" class="register" ng-click="openRegister()"/>
 
     <p>ITC and Women associations launched the Women EAC Business E-Directory. This tool is an interactive online
         directory of business Women engaged in cross border trade in EAC.</p>
@@ -12,6 +11,8 @@
 
     <p>The E-Directory gathers and disseminates not only Women business information open to members and non-members but
         also the most useful contact details and focal point in EAC region.</p>
+
+    <input type="button" value="REGISTER to the EAC Women E-Directory" class="register" ng-click="openRegister()"/>
 
     <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="contact in data">

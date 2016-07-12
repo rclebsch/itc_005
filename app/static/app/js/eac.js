@@ -658,7 +658,7 @@ function registerCtrl ($scope, $http) {
 	}
 }
 
-eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope) {
+eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope, ngDialog) {
     $scope.title = 'THE PROJECT';
     $scope.initialSection = null;
     $scope.currentSection = null;
@@ -718,4 +718,13 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
             $rootScope.$broadcast('filter', {section:$scope.currentSection, filter:action.filter});
         }
     };
+
+    $scope.openRegister = function() {
+        ga('send', 'event', 'open-register');
+		ngDialog.open({
+			template: 'registerId',
+			controller: 'registerCtrl',
+			className: 'ngdialog-theme-default'
+		});
+	};
 });
