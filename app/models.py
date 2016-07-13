@@ -183,11 +183,12 @@ class Contact(models.Model):
                                                   related_name='afiliation_from_list',
                                                   verbose_name='Afiliation from List')
     phoneLocalNumber = models.CharField(max_length=255, blank=True, null=True, verbose_name='Phone Local Number')
-    email = models.EmailField(max_length=255, unique=True, verbose_name='E-Mail')
+    email = models.EmailField(max_length=255, blank=True, null=True, verbose_name='E-Mail')
     contactStatus = models.ForeignKey(ContactStatus, db_index=True,
                                       related_name='contactStatus',
                                       verbose_name='Contact Status')
     rejectReason = models.TextField(blank=True, null=True, verbose_name='Rejection Reason')
+    address = models.TextField(blank=True, null=True, verbose_name='Address')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creation date and time')
     lastUpdate = models.DateTimeField(auto_now=True, verbose_name='Last update date and time')
 
