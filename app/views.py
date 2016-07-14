@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ValidationError
 import requests
+from django.views.decorators.cache import cache_page
 from django.conf import settings
 
 import json
@@ -48,11 +49,13 @@ def simplify_data(data, fields):
     return results
 
 
+@cache_page(60 * 15)
 @require_http_methods(["GET"])
 def index(request):
     return render(request, 'app/main.html', context={'settings': settings})
 
 
+@cache_page(60 * 15)
 @require_http_methods(["GET"])
 def contacts(request):
     try:
@@ -135,6 +138,7 @@ def contact_afiliations(request):
                         content_type='application/json')
 
 
+@cache_page(60 * 15)
 @require_http_methods(["GET"])
 def events(request):
     try:
@@ -150,6 +154,7 @@ def events(request):
                         content_type='application/json')
 
 
+@cache_page(60 * 15)
 @require_http_methods(["GET"])
 def resources(request):
     try:

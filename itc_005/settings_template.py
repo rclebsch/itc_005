@@ -164,6 +164,13 @@ LOGGING = {
     }
 }
 
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 # Catcha Tokens
 RECAPTCHA_SECRET_KEY = 'the-secret-key'
 RECAPTCHA_KEY = 'the-key'
