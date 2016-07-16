@@ -49,13 +49,13 @@ def simplify_data(data, fields):
     return results
 
 
-@cache_page(60 * 15)
+@cache_page(settings.CACHE_LONG_TERM)
 @require_http_methods(["GET"])
 def index(request):
     return render(request, 'app/main.html', context={'settings': settings})
 
 
-@cache_page(60 * 15)
+@cache_page(settings.CACHE_LONG_TERM)
 @require_http_methods(["GET"])
 def contacts(request):
     try:
@@ -106,6 +106,7 @@ def contacts(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def contact_categories(request):
     is_individual = int(request.GET.get('is_individual', None))
@@ -120,6 +121,7 @@ def contact_categories(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def contact_activities(request):
     object_list = simplify_data(ContactActivity.objects.all().order_by('contactActivityName'),
@@ -129,6 +131,7 @@ def contact_activities(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def contact_afiliations(request):
     object_list = simplify_data(ContactAfiliation.objects.all().order_by('contactAfiliationName'),
@@ -138,7 +141,7 @@ def contact_afiliations(request):
                         content_type='application/json')
 
 
-@cache_page(60 * 15)
+@cache_page(settings.CACHE_LONG_TERM)
 @require_http_methods(["GET"])
 def events(request):
     try:
@@ -154,7 +157,7 @@ def events(request):
                         content_type='application/json')
 
 
-@cache_page(60 * 15)
+@cache_page(settings.CACHE_LONG_TERM)
 @require_http_methods(["GET"])
 def resources(request):
     try:
@@ -176,6 +179,7 @@ def resources(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def resource_categories(request):
     object_list = simplify_data(ResourceCategory.objects.all().order_by('resourceCategoryName'),
@@ -185,6 +189,7 @@ def resource_categories(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def countries(request):
     object_list = simplify_data(Country.objects.filter(visible=True).order_by('orderPriority', 'countryName'),
@@ -194,6 +199,7 @@ def countries(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def borders(request):
     object_list = simplify_data(Border.objects.all().order_by('borderName'),
@@ -203,6 +209,7 @@ def borders(request):
                         content_type='application/json')
 
 
+@cache_page(settings.CACHE_SHORT_TERM)
 @require_http_methods(["GET"])
 def languages(request):
     object_list = simplify_data(Language.objects.all().order_by('languageName'),

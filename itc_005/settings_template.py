@@ -170,15 +170,19 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
+# One Day
+CACHE_LONG_TERM = 24 * 60 * 60
+# One hour
+CACHE_SHORT_TERM = 60 * 60
 
-# Catcha Tokens
+# Captcha Tokens
 RECAPTCHA_SECRET_KEY = 'the-secret-key'
 RECAPTCHA_KEY = 'the-key'
 
-#Google Analytics
+# Google Analytics
 GA_ACCOUNT = 'UA-XXXXX-Y'
 
-#For email
+# For email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
