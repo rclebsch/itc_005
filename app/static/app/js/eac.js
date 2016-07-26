@@ -123,6 +123,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
     $scope.dates = [];
     $scope.countries = [];
     $scope.locations = [];
+    $scope.total = 0;
     $scope.menuStructure = {
         id:'section-events',
         title: 'Events in EAC',
@@ -191,6 +192,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 	    	$scope.events = result;
             $scope.eventsTable.reload();
 			$scope.initialized = true;
+            $scope.total = result.length;
             $scope.buildFilters(result);
 	    }).
 	    error(function(data, status, headers, config){
@@ -215,6 +217,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
     $scope.borders = [];
     $scope.afiliations = [];
     $scope.activities = [];
+    $scope.members = 0;
     $scope.directoryTable = new ngTableParams({
                 page: 1,
                 count: 10
@@ -282,6 +285,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 	    	$scope.contacts = result;
             $scope.directoryTable.reload();
 			$scope.initialized = true;
+            $scope.members = result.length;
             $scope.buildFilters(result);
 	    }).error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
@@ -309,6 +313,7 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
     $scope.countries = [];
     $scope.borders = [];
     $scope.categories = [];
+    $scope.members = 0;
     $scope.menuStructure = {
         id:'section-contacts',
         title: 'EAC Business Contacts',
@@ -387,6 +392,7 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
             $scope.contactsTable.reload();
 			$scope.initialized = true;
 			$scope.buildFilters(result);
+            $scope.members = result.length;
 			$scope.buildSubMenus();
             $scope.$emit('controllerReady', $scope.menuStructure);
 	    }).
@@ -410,6 +416,7 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
         extendedTitle: 'Resources: Agricultural Model Contracts, Tools and training materials'};
     $scope.categories = [];
     $scope.languages = [];
+    $scope.total = 0;
     $scope.resourcesTable = new ngTableParams({
                 page: 1,
                 count: 10
@@ -478,6 +485,7 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
             $scope.resourcesTable.reload();
 			$scope.initialized = true;
             $scope.buildFilters(result);
+            $scope.total = result.length;
             $scope.buildSubMenus();
             $scope.$emit('controllerReady', $scope.menuStructure);
 	    }).

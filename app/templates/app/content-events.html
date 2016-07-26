@@ -1,5 +1,5 @@
 <section id="eventsController" ng-controller="eventsContentCtrl">
-    <p>List of all events</p>
+    <p>{[{total}]} Events</p>
     <table ng-table="eventsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="event in data">
             <td data-title="'Date'" sortable="'eventDateStart'" filter="{ 'eventDateStart': 'type-ahead' }" filter-data="dates" class="events-date" style="width:7em;" ng-bind="event.eventDateStart | date:'dd MMM. yyyy (Z)'"></td>

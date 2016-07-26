@@ -1,5 +1,5 @@
 <section id="resourcesController" ng-controller="resourcesContentCtrl">
-    <p>List of all resources</p>
+    <p>{[{total}]} Resources</p>
     <table ng-table="resourcesTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="resource in data">
             <td data-title="'Category'" sortable="'resourceCategory'" filter="{ 'resourceCategory': 'type-ahead' }" filter-data="categories">{[{resource.resourceCategory}]}</td>
