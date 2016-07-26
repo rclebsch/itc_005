@@ -160,7 +160,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
                 countriesHash.push(event.eventCountry);
                 $scope.countries.push({id:event.eventCountry, title:event.eventCountry});
             }
-            var dateObj = new Date(event.eventDate);
+            var dateObj = new Date(event.eventDateStart);
             var theDate = dateObj.getFullYear() + '-' + ('0' +(dateObj.getMonth()+1)).slice(-2);
             if(datesHash.indexOf(theDate) < 0) {
                 datesHash.push(theDate);
@@ -170,6 +170,9 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
                 locationsHash.push(event.eventLocation);
                 $scope.locations.push({id:event.eventLocation, title:event.eventLocation});
             }
+            event.start = dateObj.getFullYear() + '-' + ('0' +(dateObj.getMonth()+1)).slice(-2) + '-' + ('0' +(dateObj.getUTCDate())).slice(-2);
+            dateObj = new Date(event.eventDateEnd);
+            event.end = dateObj.getFullYear() + '-' + ('0' +(dateObj.getMonth()+1)).slice(-2) + '-' + ('0' +(dateObj.getUTCDate())).slice(-2);
         });
         $scope.countries.sort(sortAlphabetically);
         $scope.dates.sort(sortAlphabetically);

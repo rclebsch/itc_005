@@ -50,16 +50,21 @@ class Language(models.Model):
 
 class Event(models.Model):
     eventId = models.AutoField(unique=True, primary_key=True, verbose_name='Event ID')
-    eventTitle = models.CharField(max_length=255, unique=True, verbose_name='Event Title')
-    eventDate = models.DateTimeField(verbose_name='Event Date and Time')
+    eventTitle = models.CharField(max_length=255, verbose_name='Event Title')
+    eventDateStart = models.DateTimeField(verbose_name='Event Start Date and Time')
+    eventDateEnd = models.DateTimeField(verbose_name='Event End Date and Time')
     eventCountry = models.ForeignKey(Country, null=True, db_index=True, related_name='event_country',
                                      verbose_name='Country')
-    eventLocation = models.CharField(max_length=255, unique=True, verbose_name='Event Location')
-    mainDocument = models.FileField(blank=True, upload_to='events', verbose_name='Main Document')
-    additionalDocument = models.FileField(blank=True, upload_to='events', verbose_name='Additional Document')
+    eventLocation = models.CharField(max_length=255, verbose_name='Event Location')
+    eventCoverage = models.TextField(blank=True, verbose_name='Event Geographical Objectives')
+    mainDocument = models.FileField(blank=True, null=True, upload_to='events', verbose_name='Main Document')
+    additionalDocument = models.FileField(blank=True, null=True, upload_to='events', verbose_name='Additional Document')
     contactInfo = models.CharField(max_length=255, verbose_name='Contact Information')
     objectives = models.TextField(blank=True, verbose_name='Event Objectives')
-    communication = models.TextField(blank=True, verbose_name='Communication text')
+    communication = models.TextField(blank=True, null=True, verbose_name='Communication text')
+    beneficiaries = models.CharField(max_length=255, verbose_name='Number of beneficiaries')
+    otherInformation = models.TextField(blank=True, verbose_name='Other Information (private)')
+    report = models.TextField(blank=True, verbose_name='Report (private)')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creation date and time')
     lastUpdate = models.DateTimeField(auto_now=True, verbose_name='Last update date and time')
 

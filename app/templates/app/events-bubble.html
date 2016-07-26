@@ -7,8 +7,8 @@
             <div class="PBViewing" style="width:100%;">
                 <ul class="list-style-1">
                     <li ng-repeat="event in events">
-                        <a href="{[{event.mainDocument}]}" target="_blank">
-                            <span class="events-date" ng-bind="event.eventDate | date:'dd MMM. yyyy'"></span>
+                        <a href="{[{(event.mainDocument == '') ? '#': event.mainDocument}]}" target="{[{(event.mainDocument == '') ? '': '_blank'}]}">
+                            <span class="events-date" ng-bind="event.eventDateStart | date:'dd MMM. yyyy'"></span>
                             <span class="events-date">{[{event.eventLocation}]}, {[{event.eventCountry}]}</span>
                             <span>{[{event.eventTitle}]}</span>
                         </a>

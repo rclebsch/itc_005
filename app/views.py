@@ -148,8 +148,9 @@ def events(request):
         count = int(request.GET.get('count', 1000000))
     except ValueError:
         count = 1000000
-    object_list = simplify_data(Event.objects.all().order_by('-eventDate', 'eventTitle')[0:count],
-                                ['eventTitle', 'ts__eventDate', 'fk__eventCountry', 'eventLocation',
+    object_list = simplify_data(Event.objects.all().order_by('-eventDateStart', 'eventTitle')[0:count],
+                                ['eventTitle', 'ts__eventDateStart', 'ts__eventDateEnd',
+                                 'fk__eventCountry', 'eventLocation', 'eventCoverage', 'beneficiaries',
                                  'url__mainDocument', 'url__additionalDocument',
                                  'contactInfo', 'objectives'])
     return HttpResponse(status=200,

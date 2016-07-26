@@ -79,7 +79,7 @@ admin.site.register(Country, CountryAdmin)
 
 class EventAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'lastUpdate')
-    list_display = ('eventTitle', 'eventCountry', 'eventDate', 'eventLocation', 'created', 'lastUpdate')
+    list_display = ('eventTitle', 'eventCountry', 'eventDateStart', 'eventLocation', 'created', 'lastUpdate')
     search_fields = ('eventTitle', 'eventLocation')
     actions = [clear_cache]
 

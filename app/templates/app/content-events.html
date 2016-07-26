@@ -2,13 +2,16 @@
     <p>List of all events</p>
     <table ng-table="eventsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="event in data">
-            <td data-title="'Date'" sortable="'eventDate'" filter="{ 'eventDate': 'type-ahead' }" filter-data="dates" class="events-date" ng-bind="event.eventDate | date:'dd MMM. yyyy'"></td>
+            <td data-title="'Date'" sortable="'eventDateStart'" filter="{ 'eventDateStart': 'type-ahead' }" filter-data="dates" class="events-date" style="width:7em;" ng-bind="event.eventDateStart | date:'dd MMM. yyyy (Z)'"></td>
             <td data-title="'Country'" sortable="'eventCountry'" filter="{ 'eventCountry': 'type-ahead' }" filter-data="countries">{[{event.eventCountry}]}</td>
             <td data-title="'Location'" sortable="'eventLocation'" filter="{ 'eventLocation': 'type-ahead' }" filter-data="locations">{[{event.eventLocation}]}</td>
-            <td data-title="'Title'" sortable="'eventTitle'" filter="{ 'eventTitle': 'text' }">{[{event.eventTitle}]}</td>
+            <td data-title="'Title'" sortable="'eventTitle'" filter="{ 'eventTitle': 'text' }" style="width:12em;" >{[{event.eventTitle}]}</td>
             <td data-title="'Details'">
-                Contact:{[{event.contactInfo}]}<br/>
-                Objectives:{[{event.objectives}]}<br/>
+                <b>Contact: </b>{[{event.contactInfo}]}<br/>
+                <b>From: </b>{[{event.start}]} <b>To: </b>{[{event.end}]}<br/>
+                <b>Objectives: </b>{[{event.objectives}]}<br/>
+                <b>Coverage: </b>{[{event.eventCoverage}]}<br/>
+                <b>Beneficiaries: </b>{[{event.beneficiaries}]}<br/>
                 <a target="_blank" ng-href="{[{event.mainDocument}]}" ng-hide="event.mainDocument == ''">
                     <nobr><img width="48" height="48" src="/static/app/images/pdf-icon.png" /></nobr>
                 </a>
