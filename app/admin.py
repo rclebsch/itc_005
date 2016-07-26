@@ -77,7 +77,7 @@ class CountryAdmin(admin.ModelAdmin):
 admin.site.register(Country, CountryAdmin)
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(ImportExportModelAdmin):
     readonly_fields = ('created', 'lastUpdate')
     list_display = ('eventTitle', 'eventCountry', 'eventDateStart', 'eventLocation', 'created', 'lastUpdate')
     search_fields = ('eventTitle', 'eventLocation')
