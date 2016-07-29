@@ -216,7 +216,9 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
     $scope.borders = [];
     $scope.afiliations = [];
     $scope.activities = [];
+    $scope.categories = [];
     $scope.members = 0;
+    $scope.currentFilter = 'All';
     $scope.directoryTable = new NgTableParams({
                 page: 1,
                 count: 10,
@@ -238,15 +240,24 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
         }
     });
 
+    $scope.$on('filter', function(event, data) {
+        if(data.section == 'section-edirectory') {
+            angular.extend($scope.directoryTable.filter(), {contactCategory:data.filter});
+            $scope.currentFilter = (data.filter == '') ? 'All': data.filter;
+        }
+    });
+
     $scope.buildFilters = function(result) {
         var countriesHash = [];
         var bordersHash = [];
         var afiliationsHash = [];
         var activitiesHash = [];
+        var categoriesHash = [];
         $scope.countries.length = 0;
         $scope.borders.length = 0;
         $scope.afiliations.length = 0;
         $scope.activities.length = 0;
+        $scope.categories.length = 0;
         result.forEach(function(contact) {
             if(countriesHash.indexOf(contact.contactCountry) < 0) {
                 countriesHash.push(contact.contactCountry);
@@ -264,12 +275,26 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
                 activitiesHash.push(contact.activityFromList);
                 $scope.activities.push({id:contact.activityFromList, title:contact.activityFromList});
             }
+            if(categoriesHash.indexOf(contact.contactCategory) < 0) {
+                categoriesHash.push(contact.contactCategory);
+                $scope.categories.push({id:contact.contactCategory, title:contact.contactCategory});
+            }
         });
         $scope.countries.sort(sortAlphabetically);
         $scope.borders.sort(sortAlphabetically);
         $scope.afiliations.sort(sortAlphabetically);
         $scope.activities.sort(sortAlphabetically);
+        $scope.categories.sort(sortAlphabetically);
     };
+
+    $scope.buildSubMenus = function() {
+		var subItems = [];
+        subItems.push({title:'All', filter:''});
+		$scope.categories.forEach(function(category){
+            subItems.push({title:category.id, filter:category.id});
+        });
+		$scope.menuStructure.subItems = subItems;
+	};
 
 	$scope.init = function(){
 		console.log('eDirectoryContentCtrl.init');
@@ -285,6 +310,8 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
 			$scope.initialized = true;
             $scope.members = result.length;
             $scope.buildFilters(result);
+            $scope.buildSubMenus();
+            $scope.$emit('controllerReady', $scope.menuStructure);
 	    }).error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
 	    });
@@ -389,8 +416,8 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
 	    	$scope.contacts = result;
             $scope.contactsTable.reload();
 			$scope.initialized = true;
-			$scope.buildFilters(result);
-            $scope.members = result.length;
+			$scope.members = result.length;
+            $scope.buildFilters(result);
 			$scope.buildSubMenus();
             $scope.$emit('controllerReady', $scope.menuStructure);
 	    }).

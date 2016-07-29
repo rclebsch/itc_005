@@ -2114,3 +2114,10 @@ div.PBViewing{float:none}
 #donors_logos {
     text-align:center;
 }
+
+.table-filter {
+    font-size: 12px;
+    font-weight: bold;
+    padding-left: 10px;
+    color: #8090B1;
+}
