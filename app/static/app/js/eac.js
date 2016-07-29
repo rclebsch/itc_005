@@ -218,6 +218,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
     $scope.activities = [];
     $scope.categories = [];
     $scope.members = 0;
+    $scope.businessContactsTotal = 0;
     $scope.currentFilter = 'All';
     $scope.directoryTable = new NgTableParams({
                 page: 1,
@@ -245,6 +246,10 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
             angular.extend($scope.directoryTable.filter(), {contactCategory:data.filter});
             $scope.currentFilter = (data.filter == '') ? 'All': data.filter;
         }
+    });
+
+    $scope.$on('incBusinessContacts', function(event, data) {
+        $scope.businessContactsTotal += data;
     });
 
     $scope.buildFilters = function(result) {
@@ -309,6 +314,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
             $scope.directoryTable.reload();
 			$scope.initialized = true;
             $scope.members = result.length;
+            $scope.businessContactsTotal += $scope.members;
             $scope.buildFilters(result);
             $scope.buildSubMenus();
             $scope.$emit('controllerReady', $scope.menuStructure);
@@ -420,6 +426,7 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
             $scope.buildFilters(result);
 			$scope.buildSubMenus();
             $scope.$emit('controllerReady', $scope.menuStructure);
+            $scope.$parent.$broadcast('incBusinessContacts', $scope.members);
 	    }).
 	    error(function(data, status, headers, config){
 	    	console.log(data, status, headers, config);
@@ -696,17 +703,19 @@ function registerCtrl ($scope, $http) {
 
 eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope, ngDialog) {
     $scope.title = 'THE PROJECT';
-    $scope.initialSection = null;
+    $scope.initialSections = [];
     $scope.currentSection = null;
 	$scope.sections = {};
 
-	$scope.changeContent = function(id) {
-		console.log('changeContent: ' + id);
-		$scope.currentSection = id;
-		$scope.title = $scope.sections[id].extendedTitle;
+	$scope.changeContent = function(id, visible) {
+		console.log('changeContent: ' + id, visible);
+        if (visible) {
+            $scope.currentSection = id;
+            $scope.title = $scope.sections[id].extendedTitle;
+            ga('send', 'event', id);
+            $(window).scrollTop(0);
+        }
         $rootScope.$broadcast('changeContent', id);
-        $(window).scrollTop(0);
-        ga('send', 'event', id);
 	};
 
 	$scope.isVisible = function(id) {
@@ -714,9 +723,12 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 	};
 
 	$scope.routeUrl = function(section) {
-        console.log('routeUrl', $scope.initialSection, section);
-        if ($scope.initialSection == section) {
-            $scope.changeContent(section);
+        console.log('routeUrl', $scope.initialSections, section);
+        if ($scope.initialSections[0] == section) {
+            $scope.changeContent(section, true);
+            if($scope.initialSections.length > 1) {
+                $scope.changeContent($scope.initialSections[1], false);
+            }
         }
 	};
 
@@ -733,9 +745,14 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 			event.stopPropagation();
 			return false;
 		});
-        $scope.initialSection = $location.search()['s'];
-        if ($scope.initialSection == null) {
-            $scope.initialSection = 'section-edirectory';
+        var s = $location.search()['s'];
+        if (s != null) {
+            $scope.initialSections.push(s);
+        }
+
+        if ($scope.initialSections.length == 0) {
+            $scope.initialSections.push('section-edirectory');
+            $scope.initialSections.push('section-contacts');
         }
 	};
 

@@ -12,7 +12,8 @@
     <p>The E-Directory gathers and disseminates not only Women business information open to members and non-members but
         also the most useful contact details and focal point in EAC region.</p>
 
-    <input type="button" value="REGISTER to the EAC Women E-Directory" class="register" ng-click="openRegister()"/> Registered: {[{members}]} members<br/>
+    <input type="button" value="REGISTER to the EAC Women E-Directory" class="register" ng-click="openRegister()"/><br/>
+    <span>Registered: <b>{[{members}]}</b> members - Total Business Contacts <b>{[{businessContactsTotal}]}</b><span><br/>
     <span class="table-filter">Showing {[{currentFilter}]}</span>
     <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="contact in data">

@@ -12,7 +12,7 @@
                                     <div class="sortHld toggleSection2 left-hld-menu2">
                                         <ul class="menu-left" ng-repeat="(id, section) in sections">
                                             <li>
-                                                <a href="#" ng-click="changeContent(id)">{[{section.title}]}</a>
+                                                <a href="#" ng-click="changeContent(id, true)">{[{section.title}]}</a>
                                                 <ul ng-repeat="subItem in section.subItems"  ng-show="id == currentSection">
                                                     <li><a href="" ng-click="subMenuAction({bookmark:subItem.bookmark, filter:subItem.filter})">{[{subItem.title}]}</a></li>
                                                  </ul>
