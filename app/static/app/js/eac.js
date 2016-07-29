@@ -116,7 +116,7 @@ function theProjectContentCtrl ($scope) {
 
 eacApp.controller('eventsContentCtrl', eventsContentCtrl);
 
-function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
+function eventsContentCtrl ($scope, $http, $filter, NgTableParams) {
 	$scope.initialized = false;
 	$scope.events = [];
     $scope.data = [];
@@ -128,18 +128,17 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
         id:'section-events',
         title: 'Events in EAC',
         extendedTitle: 'Events: training and participation to Trade Fairs'};
-    $scope.eventsTable = new ngTableParams({
+    $scope.eventsTable = new NgTableParams({
                 page: 1,
                 count: 10
             }, {
                 total: 1,  // value less than count hide pagination
-                //total: $scope.events.length,
-                getData: function ($defer, params) {
+                getData: function (params) {
                     var filteredData = params.sorting() ? $filter('orderBy')($scope.events, params.orderBy()) : $scope.events;
                     var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
-                    $defer.resolve($scope.data);
+                    return $scope.data;
                 }
             });
 
@@ -205,7 +204,7 @@ function eventsContentCtrl ($scope, $http, $filter, ngTableParams) {
 
 eacApp.controller('eDirectoryContentCtrl', eDirectoryContentCtrl);
 
-function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog) {
+function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog) {
 	$scope.initialized = false;
 	$scope.contacts = [];
     $scope.data = [];
@@ -218,18 +217,17 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
     $scope.afiliations = [];
     $scope.activities = [];
     $scope.members = 0;
-    $scope.directoryTable = new ngTableParams({
+    $scope.directoryTable = new NgTableParams({
                 page: 1,
-                count: 10
+                count: 10,
             }, {
                 total: 1,  // value less than count hide pagination
-                //total: $scope.events.length,
-                getData: function ($defer, params) {
+                getData: function (params) {
                     var filteredData = params.filter() ? $filter('filter')($scope.contacts, params.filter()) : $scope.contacts;
                     var sortedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
-                    $defer.resolve($scope.data);
+                    return $scope.data;
                 }
             });
 
@@ -306,7 +304,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, ngTableParams, ngDialog)
 
 eacApp.controller('contactsContentCtrl', contactsContentCtrl);
 
-function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
+function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
 	$scope.initialized = false;
 	$scope.contacts = [];
     $scope.data = [];
@@ -318,18 +316,18 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
         id:'section-contacts',
         title: 'EAC Business Contacts',
         extendedTitle: 'Contacts: Trade Support Institutions, Women Associations, Trade Hubs, and Border Agencies in EAC'};
-    $scope.contactsTable = new ngTableParams({
+    $scope.contactsTable = new NgTableParams({
                 page: 1,
                 count: 10
             }, {
                 total: 1,  // value less than count hide pagination
                 //total: $scope.events.length,
-                getData: function ($defer, params) {
+                getData: function (params) {
                     var filteredData = params.sorting() ? $filter('orderBy')($scope.contacts, params.orderBy()) : $scope.contacts;
                     var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
-                    $defer.resolve($scope.data);
+                    return $scope.data;
                 }
             });
 
@@ -406,7 +404,7 @@ function contactsContentCtrl ($scope, $http, $filter, ngTableParams) {
 
 eacApp.controller('resourcesContentCtrl', resourcesContentCtrl);
 
-function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
+function resourcesContentCtrl ($scope, $http, $filter, NgTableParams) {
 	$scope.initialized = false;
 	$scope.resources = [];
     $scope.data = [];
@@ -417,18 +415,18 @@ function resourcesContentCtrl ($scope, $http, $filter, ngTableParams) {
     $scope.categories = [];
     $scope.languages = [];
     $scope.total = 0;
-    $scope.resourcesTable = new ngTableParams({
+    $scope.resourcesTable = new NgTableParams({
                 page: 1,
                 count: 10
             }, {
                 total: 1,  // value less than count hide pagination
                 //total: $scope.events.length,
-                getData: function ($defer, params) {
+                getData: function (params) {
                     var filteredData = params.sorting() ? $filter('orderBy')($scope.resources, params.orderBy()) : $scope.resources;
                     var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
-                    $defer.resolve($scope.data);
+                    return $scope.data;
                 }
             });
 
