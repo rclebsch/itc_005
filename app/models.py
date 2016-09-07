@@ -5,6 +5,9 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.mail import send_mail
 from django.conf import settings
+import os.path
+import PyPDF2
+import docx2txt
 
 
 class Country(models.Model):
@@ -67,6 +70,20 @@ class Event(models.Model):
     report = models.TextField(blank=True, verbose_name='Report (private)')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creation date and time')
     lastUpdate = models.DateTimeField(auto_now=True, verbose_name='Last update date and time')
+    indexText = models.TextField(blank=True, verbose_name='Parsed text for indexing')
+
+    def save(self, *args, **kwargs):
+        super(Event, self).save(*args, **kwargs)
+        self.indexText = ' '.join([self.eventTitle,
+                                   self.eventCountry.countryName,
+                                   self.eventLocation,
+                                   self.eventCoverage,
+                                   self.contactInfo,
+                                   self.objectives,
+                                   self.beneficiaries,
+                                   '' if not self.mainDocument.name else build_index_text(self.mainDocument.path),
+                                   '' if not self.additionalDocument.name else build_index_text(self.additionalDocument.path)])
+        super(Event, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.eventTitle
@@ -98,6 +115,16 @@ class Resource(models.Model):
     description = models.TextField(blank=True, verbose_name='Description')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creation date and time')
     lastUpdate = models.DateTimeField(auto_now=True, verbose_name='Last update date and time')
+    indexText = models.TextField(blank=True, verbose_name='Parsed text for indexing')
+
+    def save(self, *args, **kwargs):
+        super(Resource, self).save(*args, **kwargs)
+        self.indexText = ' '.join([self.language.languageName,
+                                   self.resourceCategory.resourceCategoryName,
+                                   self.title,
+                                  self.description,
+                                  '' if not self.pdfFile.name else build_index_text(self.pdfFile.path)])
+        super(Resource, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -196,6 +223,7 @@ class Contact(models.Model):
     address = models.TextField(blank=True, null=True, verbose_name='Address')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Creation date and time')
     lastUpdate = models.DateTimeField(auto_now=True, verbose_name='Last update date and time')
+    indexText = models.TextField(blank=True, verbose_name='Parsed text for indexing')
 
     def __str__(self):
         if self.contactCategory.isIndividual:
@@ -222,8 +250,24 @@ class Contact(models.Model):
                 and (not self.contactAfiliationFree or (self.contactStatus.contactStatusId == self.APPROVED)):
             raise ValidationError('No afiliation specified')
 
+    def build_index_text(self):
+        text_parts = [self.contactCategory.contactCategoryName,
+                      self.borderLocationFromList.borderName if self.borderLocationFromList is not None else '',
+                      self.contactCountry.countryName,
+                      self.phoneLocalNumber]
+        if self.contactCategory.isIndividual:
+            text_parts.extend([self.firstName,
+                               self.lastName,
+                               self.activityFromList.contactActivityName if self.activityFromList is not None else '',
+                               self.contactAfiliationFromList.contactAfiliationName if self.contactAfiliationFromList is not None else '', ])
+        else:
+            text_parts.extend([self.organizationName, ])
+        text = ' '.join(text_parts)
+        return text
+
     def save(self, *args, **kwargs):
         self.originalContactStatus = self.contactStatus
+        self.indexText = self.build_index_text()
         if self.pk is not None:
             self.originalContactStatusId = Contact.objects.get(pk=self.pk).contactStatus.contactStatusId
         super(Contact, self).save(*args, **kwargs)
@@ -232,6 +276,22 @@ class Contact(models.Model):
         verbose_name = 'Contact'
         verbose_name_plural = 'Contacts'
         ordering = ['contactCategory', 'organizationName', 'lastName', 'firstName']
+
+
+class Search(models.Model):
+    SEARCH_RESULT_CONTACT = 1
+    SEARCH_RESULT_EVENT = 2
+    SEARCH_RESULT_RESOURCE = 3
+
+    id = models.IntegerField(unique=True, primary_key=True)
+    type = models.IntegerField()
+
+    @staticmethod
+    def build_search(query_string):
+        return Search.objects.using('sphinx').raw('SELECT * FROM eac WHERE MATCH(\''+query_string+'\')')
+
+    class Meta:
+        managed = False
 
 
 # After the save of a Contact
@@ -279,3 +339,33 @@ def send_email(subject, body, recipient_list):
         send_mail(subject, body, 'no-reply@eac.itc.org', settings.DEBUG_EMAIL_DESTINATIONS, fail_silently=False)
     else:
         send_mail(subject, body, 'no-reply@eac.itc.org', recipient_list, fail_silently=False)
+
+
+def build_index_text_pdf(file_name):
+    pdf_file_obj = open(file_name,'rb')
+    pdf_reader = PyPDF2.PdfFileReader(pdf_file_obj)
+    text_items = []
+    for i in range(pdf_reader.numPages):
+        text_items.append(pdf_reader.getPage(i).extractText())
+    return (' '.join(text_items)).replace('\n\n', ' ').replace('\n', '')
+
+
+def build_index_text_docx(file_name):
+    return docx2txt.process(file_name).replace('\n\n', ' ')
+
+
+def build_index_text_html(file_name):
+    # TODO html parser
+    return ''
+
+
+def build_index_text(file_name):
+    extension = os.path.splitext(file_name)[1]
+    if extension == '.pdf':
+        return build_index_text_pdf(file_name)
+    elif extension == '.docx':
+        return build_index_text_docx(file_name)
+    elif extension == '.html':
+        return build_index_text_html(file_name)
+    else:
+        raise Exception('No parser for the extension: ' + extension)

@@ -11,7 +11,7 @@ import re
 import csv
 
 from app.models import Contact, ContactCategory, ContactActivity, ContactAfiliation, ContactStatus,\
-    Country, Border, Language, Resource, ResourceCategory, Event
+    Country, Border, Language, Resource, ResourceCategory, Event, Search
 
 
 class SessionData:
@@ -241,6 +241,95 @@ def export(request):
             line.append(row[field])
         writer.writerow(line)
     return response
+
+
+def build_event_search_element(event_id):
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        return None
+    element = {
+        'type': Search.SEARCH_RESULT_EVENT,
+        'id': event.eventId,
+        'title': event.eventTitle,
+        'eventDateStart': event.eventDateStart.isoformat(),
+        'eventCountry': event.eventCountry.countryName,
+        'eventLocation': event.eventLocation,
+        'eventCoverage': event.eventCoverage,
+        'beneficiaries': event.beneficiaries,
+        'mainDocument': event.mainDocument.url if event.mainDocument.name else None,
+        'additionalDocument': event.additionalDocument.url if event.additionalDocument.name else None,
+        'contactInfo': event.contactInfo,
+        'objectives': event.objectives,
+    }
+    return element
+
+
+def build_resource_search_element(resource_id):
+    try:
+        resource = Resource.objects.get(pk=resource_id)
+    except Resource.DoesNotExist:
+        return None
+    element = {
+        'type': Search.SEARCH_RESULT_RESOURCE,
+        'id': resource.resourceId,
+        'title': resource.title,
+        'timestamp': resource.lastUpdate.isoformat(),
+        'description': resource.description,
+        'language': resource.language.languageName,
+        'resourceCategory': resource.resourceCategory.resourceCategoryName,
+        'pdfFile': resource.pdfFile.url if resource.pdfFile.name else None,
+        'firstPagePicture': resource.firstPagePicture.url if resource.firstPagePicture.name else None,
+    }
+    return element
+
+
+def build_contact_search_element(contact_id):
+    try:
+        contact = Contact.objects.get(pk=contact_id)
+    except Contact.DoesNotExist:
+        return None
+    element = {
+        'type': Search.SEARCH_RESULT_CONTACT,
+        'id': contact.contactId,
+        'lastUpdate': contact.lastUpdate.isoformat(),
+        'lastName': contact.lastName,
+        'firstName': contact.firstName,
+        'contactCategory': contact.contactCategory.contactCategoryName,
+        'isIndividual': contact.contactCategory.isIndividual,
+        'contactCountry': contact.contactCountry.countryName,
+        'borderLocationFromList': contact.borderLocationFromList.borderName,
+        'phonePrefix': contact.contactCountry.phonePrefix,
+        'phoneLocalNumber': contact.phoneLocalNumber,
+        'email': contact.email,
+        'organizationName': contact.organizationName if not contact.contactCategory.isIndividual else None,
+        'activityFromList': contact.activityFromList.contactActivityName if contact.contactCategory.isIndividual and contact.activityFromList is not None else None,
+        'contactAfiliationFromList': contact.contactAfiliationFromList.contactAfiliationName if contact.contactCategory.isIndividual and contact.contactAfiliationFromList is not None else None,
+    }
+    return element
+
+
+@cache_page(settings.CACHE_SHORT_TERM)
+@require_http_methods(["GET"])
+def search(request):
+    query_string = str(request.GET.get('query_string', None))
+    object_list = Search.build_search(query_string)
+    results = []
+    for item in object_list:
+        object_type = getattr(item, 'type')
+        object_id = getattr(item, 'id') % 1000000
+        if object_type == Search.SEARCH_RESULT_CONTACT:
+            element = build_contact_search_element(object_id)
+        elif object_type == Search.SEARCH_RESULT_EVENT:
+            element = build_event_search_element(object_id)
+        elif object_type == Search.SEARCH_RESULT_RESOURCE:
+            element = build_resource_search_element(object_id)
+        if element is not None:
+            results.append(element)
+
+    return HttpResponse(status=200,
+                        content=json.dumps(results),
+                        content_type='application/json')
 
 
 def validate_captcha(token):

@@ -23,4 +23,7 @@ urlpatterns = [
     # -Captcha http://django-simple-captcha.readthedocs.org/en/latest/usage.html
     url(r'^export/$', views.export, name='export'),
 
+    # Sphinx Search API
+    url(r'^search/$', views.search, name='search'),
+
 ]
