@@ -2,10 +2,11 @@
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ValidationError
-import requests
 from django.views.decorators.cache import cache_page
 from django.conf import settings
 
+import requests
+import sys
 import json
 import re
 import csv
@@ -298,7 +299,7 @@ def build_contact_search_element(contact_id):
         'contactCategory': contact.contactCategory.contactCategoryName,
         'isIndividual': contact.contactCategory.isIndividual,
         'contactCountry': contact.contactCountry.countryName,
-        'borderLocationFromList': contact.borderLocationFromList.borderName,
+        'borderLocationFromList': contact.borderLocationFromList.borderName if contact.borderLocationFromList is not None else '',
         'phonePrefix': contact.contactCountry.phonePrefix,
         'phoneLocalNumber': contact.phoneLocalNumber,
         'email': contact.email,
@@ -313,23 +314,28 @@ def build_contact_search_element(contact_id):
 @require_http_methods(["GET"])
 def search(request):
     query_string = str(request.GET.get('query_string', None))
-    object_list = Search.build_search(query_string)
-    results = []
-    for item in object_list:
-        object_type = getattr(item, 'type')
-        object_id = getattr(item, 'id') % 1000000
-        if object_type == Search.SEARCH_RESULT_CONTACT:
-            element = build_contact_search_element(object_id)
-        elif object_type == Search.SEARCH_RESULT_EVENT:
-            element = build_event_search_element(object_id)
-        elif object_type == Search.SEARCH_RESULT_RESOURCE:
-            element = build_resource_search_element(object_id)
-        if element is not None:
-            results.append(element)
+    try:
+        object_list = Search.build_search(query_string)
+        results = []
+        for item in object_list:
+            object_type = getattr(item, 'type')
+            object_id = getattr(item, 'id') % 1000000
+            if object_type == Search.SEARCH_RESULT_CONTACT:
+                element = build_contact_search_element(object_id)
+            elif object_type == Search.SEARCH_RESULT_EVENT:
+                element = build_event_search_element(object_id)
+            elif object_type == Search.SEARCH_RESULT_RESOURCE:
+                element = build_resource_search_element(object_id)
+            if element is not None:
+                results.append(element)
 
-    return HttpResponse(status=200,
-                        content=json.dumps(results),
-                        content_type='application/json')
+        return HttpResponse(status=200,
+                            content=json.dumps(results),
+                            content_type='application/json')
+    except:
+        return HttpResponse(status=400,
+                            content=sys.exc_info()[0],
+                            content_type='application/json')
 
 
 def validate_captcha(token):

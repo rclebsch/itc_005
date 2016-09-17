@@ -282,13 +282,16 @@ class Search(models.Model):
     SEARCH_RESULT_CONTACT = 1
     SEARCH_RESULT_EVENT = 2
     SEARCH_RESULT_RESOURCE = 3
+    SEARCH_LIMIT = 1000
+    SEARCH_QUERY = 'SELECT * FROM eac WHERE MATCH(%s) limit 0, %s option max_matches=%s'
 
     id = models.IntegerField(unique=True, primary_key=True)
     type = models.IntegerField()
 
     @staticmethod
     def build_search(query_string):
-        return Search.objects.using('sphinx').raw('SELECT * FROM eac WHERE MATCH(\''+query_string+'\')')
+        return Search.objects.using('sphinx').raw(Search.SEARCH_QUERY,
+                                                  [query_string, int(Search.SEARCH_LIMIT), int(Search.SEARCH_LIMIT)])
 
     class Meta:
         managed = False

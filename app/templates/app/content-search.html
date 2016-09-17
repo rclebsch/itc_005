@@ -1,0 +1,52 @@
+<section id="searchController" ng-controller="searchContentCtrl">
+    <table ng-table="searchTable" show-filter="true" class="table table-condensed table-bordered table-striped">
+  	    <tr ng-repeat="result in data">
+            <td data-title="resultsSummary"  filter="{ 'details': 'text' }" >
+                <div  ng-show="result.type == 1" class="search_contact_content">
+                    <b>{[{result.contactCategory}]}</b>
+                    <span class="search_timestamp" ng-bind="result.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'"></span><br/>
+                    {[{result.name}]}<br/>
+                    <span class="search_contact_details">
+                        <span ng-hide="result.activity==''">{[{result.activity}]}<br/></span>
+                        {[{result.location}]}<br/>
+                        <b>Contact Info: </b>{[{result.contactInfo}]}
+                    </span>
+                </div>
+                <div  ng-show="result.type == 2" class="search_event_content">
+                    <div class="search_event_files">
+                        <a target="_blank" ng-href="{[{result.mainDocument}]}" ng-hide="result.mainDocument == null">
+                            <nobr><img width="48" height="48" src="/static/app/images/pdf-icon.png" /></nobr>
+                        </a>
+                        <a target="_blank" ng-href="{[{result.additionalDocument}]}" ng-hide="result.additionalDocument == null">
+                            <nobr><img width="48" height="48" src="/static/app/images/pdf-icon.png"/></nobr>
+                        </a>
+                    </div>
+                    <b>Event - <span ng-bind="result.eventDateStart | date:'EEEE, LLLL d, yyyy'"></span> <span>({[{result.location}]})</span></b><br/>
+                    <span class="search_event_title" ng-bind="result.title"></span><br/>
+                    <span class="search_event_objectives" ng-bind="result.objectives"></span><br/>
+                    <span class="search_event_details">
+                        <b>Coverage: </b>{[{result.eventCoverage}]} (Beneficiaries: {[{result.beneficiaries}]})<br/>
+                        <b>Contact Info: </b>{[{result.contactInfo}]}<br/>
+                    </span>
+                </div>
+                <div  ng-show="result.type == 3">
+                    <a target="_blank" ng-href="{[{result.pdfFile}]}">
+                         <img ng-elevate-zoom
+                              default-first-page="/static/app/images/itc-downloads.png"
+                              ng-src="{[{result.firstPagePicture}]}"
+                              class="resource-first-page"
+                              zoom-image="{[{result.firstPagePicture}]}"
+                         />
+                    </a>
+                    <div class="search_resource_content">
+                        <b>{[{result.resourceCategory}]} - {[{result.language}]}</b>
+                        <span class="search_timestamp" ng-bind="result.timestamp | date:'yyyy-MM-dd HH:mm:ss'"></span><br/>
+                        <span class="search_resource_title">{[{result.title}]}</span><br/>
+                        <span class="search_resource_description">{[{result.description}]}</span><br/>
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
