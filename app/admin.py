@@ -4,7 +4,7 @@ from import_export.admin import ImportExportModelAdmin
 from django.core.cache import cache
 
 from app.models import Contact, ContactCategory, Country, Event, Language, Resource, ResourceCategory, Border, \
-    ContactActivity, ContactAfiliation
+    ContactActivity, ContactAfiliation, SearchLog
 
 
 def clear_cache(modeladmin, request, queryset):
@@ -120,4 +120,12 @@ class ResourceAdmin(admin.ModelAdmin):
 admin.site.register(Resource, ResourceAdmin)
 
 admin.site.register(Language)
+
+
+class SearchLogAdmin(ImportExportModelAdmin):
+    readonly_fields = ('query', 'total','searchTs')
+    list_display = ('searchTs', 'query', 'total')
+    search_fields = ('searchTs', 'query', 'total')
+
+admin.site.register(SearchLog, SearchLogAdmin)
 

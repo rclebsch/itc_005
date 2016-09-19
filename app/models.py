@@ -226,7 +226,7 @@ class Contact(models.Model):
     indexText = models.TextField(blank=True, verbose_name='Parsed text for indexing')
 
     def __str__(self):
-        if self.contactCategory.isIndividual:
+        if self.contactCategory.isIndividual or self.organizationName == '':
             return self.lastName + ', ' + self.firstName
         else:
             return self.organizationName
@@ -295,6 +295,16 @@ class Search(models.Model):
 
     class Meta:
         managed = False
+
+
+class SearchLog(models.Model):
+    id = models.AutoField(unique=True, primary_key=True)
+    searchTs = models.DateTimeField(auto_now_add=True, verbose_name='Search timestamp')
+    total = models.IntegerField(blank=False, null=False, verbose_name='Search query')
+    query = models.CharField(max_length=512, blank=False, null=False, verbose_name='Search query')
+
+    def __str__(self):
+        return self.query
 
 
 # After the save of a Contact

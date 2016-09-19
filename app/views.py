@@ -12,7 +12,7 @@ import re
 import csv
 
 from app.models import Contact, ContactCategory, ContactActivity, ContactAfiliation, ContactStatus,\
-    Country, Border, Language, Resource, ResourceCategory, Event, Search
+    Country, Border, Language, Resource, ResourceCategory, Event, Search, SearchLog
 
 
 class SessionData:
@@ -329,12 +329,17 @@ def search(request):
             if element is not None:
                 results.append(element)
 
+        search_log = SearchLog()
+        search_log.query = query_string
+        search_log.total = len(results)
+        search_log.save()
+
         return HttpResponse(status=200,
                             content=json.dumps(results),
                             content_type='application/json')
     except:
         return HttpResponse(status=400,
-                            content=sys.exc_info()[0],
+                            content=sys.exc_info(),
                             content_type='application/json')
 
 
