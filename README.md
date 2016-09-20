@@ -57,11 +57,20 @@ Open your browser and type http://[your-VM-ip]/admin and use your superuser user
 Open your browser and type http://[your-VM-ip]/ and you will be redirected to the site home page.
 
 ## Configure Sphinx
-1. Copy the configuratio/sphinx.conf file to /etc/sphinxsearch (or to the corresponding configuration path)
+1. Copy the configuration/sphinx.conf file to /etc/sphinxsearch (or to the corresponding configuration path)
 1. Configure the source "eac" by changing the DB settings (host, port, user, password, db_name)
 1. Index the contents of the DB:
 ~~~
 service sphinxsearch restart
 indexer --all --rotate
 ~~~
+
+## Auto Links
+
+In order to route to a different section when opening the page, an additional string must be added to the url:
+~~~
+#?s=[section]&filter=[the-filter]
+~~~
+Where section can be: section-edirectory, section-contacts, section-resources, section-events, section-the-project, section-search.
+Filter is currently used for the search only. It will fire a new search based on the query string sent through the filter parameter.
 

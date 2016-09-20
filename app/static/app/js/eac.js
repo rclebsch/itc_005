@@ -263,7 +263,6 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
             });
 
     $scope.$on('changeContent', function(event, data) {
-        console.log('eDirectory changeContent', data);
         if(data == 'section-edirectory') {
             $scope.init();
         }
@@ -498,20 +497,30 @@ function searchContentCtrl ($scope, $http, $filter, NgTableParams) {
         }
     });
 
-    $scope.$on('search', function(event, data) {
-        $http({
+    $scope.search = function(query) {
+         $http({
 	        method: 'GET',
-	        url: 'search?query_string='+data
+	        url: 'search?query_string='+query
 	    }).success(function (results) {
 	    	$scope.searchResults = $scope.processResults(results);
             $scope.searchTable.reload();
 			$scope.initialized = true;
-            $scope.resultsSummary = 'Search results: ' + $scope.searchResults.length + ' matches for query "' + data + '"';
+            $scope.resultsSummary = 'Search results: ' + $scope.searchResults.length + ' matches for query "' + query + '"';
 	    }).
 	    error(function(data, status, headers, config){
-	    	console.log(data, status, headers, config);
+	    	console.log(query, status, headers, config);
             $scope.resultsSummary = 'Search request failed. Please try again.';
 	    });
+    };
+
+    $scope.$on('search', function(event, data) {
+        $scope.search(data);
+    });
+
+    $scope.$on('filter', function(event, data) {
+        if(data.section == 'section-search') {
+            $scope.search(data.filter);
+        }
     });
 
     $scope.processResults = function(results) {
@@ -826,6 +835,7 @@ function registerCtrl ($scope, $http) {
 eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope, ngDialog) {
     $scope.title = 'THE PROJECT';
     $scope.initialSections = [];
+    $scope.initialFilter = null;
     $scope.currentSection = null;
 	$scope.sections = {};
 
@@ -848,6 +858,9 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
         console.log('routeUrl', $scope.initialSections, section);
         if ($scope.initialSections[0] == section) {
             $scope.changeContent(section, true);
+            if ($scope.initialFilter) {
+                $rootScope.$broadcast('filter', {section:section, filter:$scope.initialFilter});
+            }
             if($scope.initialSections.length > 1) {
                 $scope.changeContent($scope.initialSections[1], false);
             }
@@ -867,9 +880,10 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 			event.stopPropagation();
 			return false;
 		});
-        var s = $location.search()['s'];
-        if (s != null) {
-            $scope.initialSections.push(s);
+        var params = $location.search();
+        if (params['s'] != null) {
+            $scope.initialSections.push(params['s']);
+            $scope.initialFilter = params['filter'] ? params['filter'] : null;
         }
 
         if ($scope.initialSections.length == 0) {
