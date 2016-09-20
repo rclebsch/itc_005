@@ -4,11 +4,28 @@ from import_export.admin import ImportExportModelAdmin
 from django.core.cache import cache
 
 from app.models import Contact, ContactCategory, Country, Event, Language, Resource, ResourceCategory, Border, \
-    ContactActivity, ContactAfiliation
+    ContactActivity, ContactAfiliation, SearchLog
 
 
 def clear_cache(modeladmin, request, queryset):
     cache.clear()
+
+
+def reindex_resources(modeladmin, request, queryset):
+    objects = Resource.objects.order_by('resourceId')
+    for item in objects:
+        item.save()
+
+
+def reindex_events(modeladmin, request, queryset):
+    objects = Event.objects.order_by('eventId')
+    for item in objects:
+        item.save()
+
+def reindex_contacts(modeladmin, request, queryset):
+    objects = Contact.objects.order_by('contactId')
+    for item in objects:
+        item.save()
 
 
 class BorderAdmin(admin.ModelAdmin):
@@ -64,7 +81,7 @@ class ContactAdmin(ImportExportModelAdmin):
                      'contactCountry__countryName', 'borderLocationFromList__borderName']
     list_filter = ('contactCategory', 'contactStatus')
     resource_class = ContactResource
-    actions = [clear_cache]
+    actions = [clear_cache, reindex_contacts]
 
 admin.site.register(Contact, ContactAdmin)
 
@@ -81,7 +98,7 @@ class EventAdmin(ImportExportModelAdmin):
     readonly_fields = ('created', 'lastUpdate')
     list_display = ('eventTitle', 'eventCountry', 'eventDateStart', 'eventLocation', 'created', 'lastUpdate')
     search_fields = ('eventTitle', 'eventLocation')
-    actions = [clear_cache]
+    actions = [clear_cache, reindex_events]
 
 admin.site.register(Event, EventAdmin)
 
@@ -98,9 +115,17 @@ class ResourceAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'lastUpdate')
     list_display = ('title', 'resourceCategory', 'language', 'created', 'lastUpdate')
     search_fields = ('title', 'resourceCategory__resourceCategoryName')
-    actions = [clear_cache]
+    actions = [clear_cache, reindex_resources]
 
 admin.site.register(Resource, ResourceAdmin)
 
 admin.site.register(Language)
+
+
+class SearchLogAdmin(ImportExportModelAdmin):
+    readonly_fields = ('query', 'total','searchTs')
+    list_display = ('searchTs', 'query', 'total')
+    search_fields = ('searchTs', 'query', 'total')
+
+admin.site.register(SearchLog, SearchLogAdmin)
 

@@ -2121,3 +2121,36 @@ div.PBViewing{float:none}
     padding-left: 10px;
     color: #8090B1;
 }
+
+.search_resource_content {
+    width:80%;
+    float:right;
+    font-size:14px;
+}
+
+.search_timestamp {
+    font-size: 10px;
+}
+
+.search_resource_description, .search_event_objectives, .search_event_details, .search_contact_details {
+    font-size: 12px;
+}
+
+.search_event_content, .search_contact_content, .search_resource_title, .search_event_title {
+    font-size:14px;
+}
+
+.search_event_files {
+    float:left;
+    margin:10px;
+}
+
+.search-help-content {
+    font-size: 12px;
+}
+
+.search-help {
+    font-weight: bold;
+    font-size: 14px;
+    color: blue;
+}

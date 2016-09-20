@@ -80,6 +80,34 @@ eacApp.controller('eventBubbleCtrl', function ($scope, $http) {
 	};
 });
 
+eacApp.controller('headerCtrl', function ($scope, $rootScope, ngDialog) {
+	$scope.initialized = false;
+	$scope.events = [];
+    $scope.queryString = '';
+
+	$scope.init = function(){
+		console.log('headerCtrl.init');
+		if ($scope.initialized) {
+			return;
+		}
+		$scope.initialized = true;
+	};
+
+    $scope.search = function() {
+        if ($scope.queryString.length > 0) {
+            $rootScope.$broadcast('search', $scope.queryString);
+            $rootScope.$broadcast('forceContent', 'section-search');
+        }
+    }
+
+    $scope.openHelp = function() {
+		ngDialog.open({
+			template: 'searchHelpId',
+			className: 'ngdialog-theme-default'
+		});
+	};
+});
+
 eacApp.controller('theProjectContentCtrl', theProjectContentCtrl);
 
 function theProjectContentCtrl ($scope) {
@@ -235,7 +263,6 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
             });
 
     $scope.$on('changeContent', function(event, data) {
-        console.log('eDirectory changeContent', data);
         if(data == 'section-edirectory') {
             $scope.init();
         }
@@ -434,6 +461,110 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
 	};
 
     $scope.$emit('controllerReady', $scope.menuStructure);
+}
+
+eacApp.controller('searchContentCtrl', searchContentCtrl);
+
+function searchContentCtrl ($scope, $http, $filter, NgTableParams) {
+	$scope.initialized = false;
+    $scope.searchResults = [];
+    $scope.data = [];
+    $scope.resultsSummary = 'Search results';
+    $scope.menuStructure = {
+        id:'section-search',
+        title: 'Search',
+        extendedTitle: '',
+    };
+
+    $scope.searchTable = new NgTableParams({
+                page: 1,
+                count: 10
+            }, {
+                total: 1,  // value less than count hide pagination
+                //total: $scope.events.length,
+                getData: function (params) {
+                    var filteredData = params.sorting() ? $filter('orderBy')($scope.searchResults, params.orderBy()) : $scope.searchResults;
+                    var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
+                    $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                    params.total(sortedData.length);
+                    return $scope.data;
+                }
+            });
+
+    $scope.$on('changeContent', function(event, data) {
+        if(data == 'section-search') {
+            $scope.init();
+        }
+    });
+
+    $scope.search = function(query) {
+         $http({
+	        method: 'GET',
+	        url: 'search?query_string='+query
+	    }).success(function (results) {
+	    	$scope.searchResults = $scope.processResults(results);
+            $scope.searchTable.reload();
+			$scope.initialized = true;
+            $scope.resultsSummary = 'Search results: ' + $scope.searchResults.length + ' matches for query "' + query + '"';
+	    }).
+	    error(function(data, status, headers, config){
+	    	console.log(query, status, headers, config);
+            $scope.resultsSummary = 'Search request failed. Please try again.';
+	    });
+    };
+
+    $scope.$on('search', function(event, data) {
+        $scope.search(data);
+    });
+
+    $scope.$on('filter', function(event, data) {
+        if(data.section == 'section-search') {
+            $scope.search(data.filter);
+        }
+    });
+
+    $scope.processResults = function(results) {
+        var searchResults = [];
+        results.forEach(function(result) {
+            if (result.type == 1) {
+                searchResults.push($scope.buildContactResult(result))
+            } else if (result.type == 2) {
+                searchResults.push($scope.buildEventResult(result))
+            } else if (result.type == 3) {
+                searchResults.push($scope.buildResourceResult(result))
+            }
+        });
+        return searchResults;
+    };
+
+    $scope.buildContactResult = function(contact) {
+        contact.name = (contact.isIndividual) ?
+                        contact.firstName + ' ' + contact.lastName :
+                        contact.organizationName + ((contact.firstName) ? ' (' + contact.firstName + ' ' + contact.lastName + ')' : '');
+        contact.location = contact.contactCountry + (contact.borderLocationFromList ? (', ' + contact.borderLocationFromList ) : '');
+        contact.activity = (contact.isIndividual) ? ' ' + ((contact.activityFromList) ? contact.activityFromList : '') + ' (' + contact.contactAfiliationFromList + ')' : '';
+        var infos = [];
+        if (contact.phoneLocalNumber) infos.push('+' + contact.phonePrefix + ' ' + contact.phoneLocalNumber);
+        if (contact.email) infos.push(contact.email);
+        contact.contactInfo = infos.join(' | ');
+        contact.details = ['contact', contact.name, contact.location, contact.activity, contact.contactInfo, contact.lastUpdate].join(' ');
+        contact.firstPagePicture = '';
+        return contact;
+    };
+
+    $scope.buildEventResult = function(event) {
+        event.location = event.eventCountry + ', ' + event.eventLocation;
+        event.details = ['event', event.location, event.eventDateStart, event.title, event.objectives, event.eventCoverage, event.beneficiaries, event.contactInfo].join(' ');
+        event.firstPagePicture = '';
+        return event;
+    };
+
+    $scope.buildResourceResult = function(resource) {
+        resource.details = ['resource', resource.language, resource.resourceCategory, resource.title, resource.description, resource.timestamp].join(' ');
+        return resource;
+    };
+
+	$scope.$emit('controllerReady', $scope.menuStructure);
 }
 
 eacApp.controller('resourcesContentCtrl', resourcesContentCtrl);
@@ -704,6 +835,7 @@ function registerCtrl ($scope, $http) {
 eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $rootScope, ngDialog) {
     $scope.title = 'THE PROJECT';
     $scope.initialSections = [];
+    $scope.initialFilter = null;
     $scope.currentSection = null;
 	$scope.sections = {};
 
@@ -726,6 +858,9 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
         console.log('routeUrl', $scope.initialSections, section);
         if ($scope.initialSections[0] == section) {
             $scope.changeContent(section, true);
+            if ($scope.initialFilter) {
+                $rootScope.$broadcast('filter', {section:section, filter:$scope.initialFilter});
+            }
             if($scope.initialSections.length > 1) {
                 $scope.changeContent($scope.initialSections[1], false);
             }
@@ -745,9 +880,10 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
 			event.stopPropagation();
 			return false;
 		});
-        var s = $location.search()['s'];
-        if (s != null) {
-            $scope.initialSections.push(s);
+        var params = $location.search();
+        if (params['s'] != null) {
+            $scope.initialSections.push(params['s']);
+            $scope.initialFilter = params['filter'] ? params['filter'] : null;
         }
 
         if ($scope.initialSections.length == 0) {
@@ -762,6 +898,10 @@ eacApp.controller('titleCtrl', function ($scope, $location, $anchorScroll, $root
         console.log('controllerReady', data.id);
         $scope.sections[data.id] = data;
         $scope.routeUrl(data.id);
+    });
+
+    $scope.$on('forceContent', function(event, data) {
+        $scope.changeContent(data, true);
     });
 
     $scope.subMenuAction = function (action) {

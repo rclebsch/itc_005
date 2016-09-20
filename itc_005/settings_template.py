@@ -20,6 +20,14 @@ DATABASES = {
         'PASSWORD': 'password',
         'HOST': '192.168.181.1',
         'PORT': '3306',
+    },
+    'sphinx': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'spinxql',
+        'USER': 'user',          # user and password not required for sphinx but to avoid sock access
+        'PASSWORD': 'password',
+        'HOST': '0',             # IP WERE SPHINX-SEARCH is running
+        'PORT': '9306',
     }
 }
 
