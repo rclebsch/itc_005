@@ -310,14 +310,15 @@ class SearchLog(models.Model):
 # After the save of a Contact
 @receiver(post_save, sender=Contact)
 def send_registration_email(instance, created, **kwargs):
-    if created:
-        if instance.contactStatus.contactStatusId == Contact.NEW:
-            send_registration_received_email(instance)
-        elif instance.contactStatus.contactStatusId == Contact.APPROVED:
+    if instance.email:
+        if created:
+            if instance.contactStatus.contactStatusId == Contact.NEW:
+                send_registration_received_email(instance)
+            elif instance.contactStatus.contactStatusId == Contact.APPROVED:
+                send_registration_approved_email(instance)
+        elif (instance.originalContactStatusId != instance.contactStatus.contactStatusId) \
+                and (instance.contactStatus.contactStatusId == Contact.APPROVED):
             send_registration_approved_email(instance)
-    elif (instance.originalContactStatusId != instance.contactStatus.contactStatusId) \
-            and (instance.contactStatus.contactStatusId == Contact.APPROVED):
-        send_registration_approved_email(instance)
 
 
 def send_registration_received_email(contact):
