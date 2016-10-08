@@ -254,14 +254,14 @@ class Contact(models.Model):
         text_parts = [self.contactCategory.contactCategoryName,
                       self.borderLocationFromList.borderName if self.borderLocationFromList is not None else '',
                       self.contactCountry.countryName,
-                      self.phoneLocalNumber]
+                      self.phoneLocalNumber if self.phoneLocalNumber is not None else '']
         if self.contactCategory.isIndividual:
-            text_parts.extend([self.firstName,
-                               self.lastName,
+            text_parts.extend([self.firstName if self.firstName is not None else '',
+                               self.lastName if self.lastName is not None else '',
                                self.activityFromList.contactActivityName if self.activityFromList is not None else '',
                                self.contactAfiliationFromList.contactAfiliationName if self.contactAfiliationFromList is not None else '', ])
         else:
-            text_parts.extend([self.organizationName, ])
+            text_parts.extend([self.organizationName if not None else '', ])
         text = ' '.join(text_parts)
         return text
 

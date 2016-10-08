@@ -401,7 +401,7 @@ def register(request):
         except ValidationError as e:
             return HttpResponse(status=400,
                                 content='{"Error": "Invalid contact data: ' + e.__str__() + '"}',
-                                        content_type='application/json')
+                                content_type='application/json')
     except Exception as e:
         return HttpResponse(status=400,
                             content='{"Error": "Contact not created (' + e.__str__() + ')"}',
