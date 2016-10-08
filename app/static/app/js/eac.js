@@ -1,4 +1,4 @@
-var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate','ngDialog','ui.bootstrap']);
+var eacApp = angular.module('eacApp', ['ngRoute','ngTable','ngAnimate','ngDialog','ui.bootstrap', 'ngMaterial', 'hm.readmore']);
 
 eacApp.run(['$templateCache', function($templateCache) {
     $templateCache.put('ng-table/filters/text.html',       '<input type="text" placeholder="Type filter" ng-model="params.filter()[name]" name="{{name}}" ng-disabled="$filterRow.disabled" ng-if="filter == \'text\'" class="input-filter form-control" />');

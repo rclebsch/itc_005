@@ -2154,3 +2154,11 @@ div.PBViewing{float:none}
     font-size: 14px;
     color: blue;
 }
+
+.readmore-paragraph {
+    text-align: justify;
+}
+
+.readmore-dots-class, .readmore-link-class {
+    font-size:0.8em;
+}
