@@ -12,4 +12,8 @@ socket = /var/run/%(project).sock
 chmod-socket = 664
 vacuum = true
 
+env LANG="en_US.utf8"
+env LC_ALL="en_US.UTF-8"
+env LC_LANG="en_US.UTF-8"
+
 logto = /var/log/uwsgi/%n.log
