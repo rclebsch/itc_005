@@ -1,11 +1,13 @@
 <section class="header-mid">
     <section class="header-mid" id="headerController" ng-controller="headerCtrl">
-        <div class="wrapper clearfix">
-            <a style="display:inline-block;width:60%" href="//www.intracen.org" title="ITC" class="logo" target="_blank"><img src="/static/app/images/logo.png" alt="ITC"/></a>
-            <div style="display:inline-block;width:auto">
-                <input type="text" ng-model="queryString" style="width:240px" ng-keypress="($event.which === 13)?search():0">
-                <a href="#" ng-click="search()"/><img src="/static/app/images/search_small.png" alt="Search"></a>
-                <a href="#" ng-click="openHelp()"/><img src="/static/app/images/help-icon-small.png" alt="Search"></a>
+        <div class="wrapper clearfix" style="display:-webkit-box;-webkit-box-align:end">
+            <div>
+                <a href="//www.intracen.org" class="logo" target="_blank"><img src="/static/app/images/logo.png" alt="ITC" class="search-height"/></a>
+            </div>
+            <div class="search-bar">
+                <input type="search" ng-model="queryString" ng-keypress="($event.which === 13)?search():0" placeholder="&#x1f50e;" class="search-input"/>
+                <img src="/static/app/images/search_small.png" alt="Search" ng-click="search()">
+                <img src="/static/app/images/help-icon-small.png" alt="Search" ng-click="openHelp()">
             </div>
             <!--<h1 class="punch-line">Export Impact For Good</h1>-->
         </div>
