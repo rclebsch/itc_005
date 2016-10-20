@@ -42,8 +42,12 @@
                         <b>{[{result.resourceCategory}]} - {[{result.language}]}</b>
                         <span class="search_timestamp" ng-bind="result.timestamp | date:'yyyy-MM-dd HH:mm:ss'"></span><br/>
                         <span class="search_resource_title">{[{result.title}]}</span><br/>
-                        <span class="search_resource_description">{[{result.description}]}</span><br/>
-
+                        <span class="search_resource_description">
+                            <p class="readmore-paragraph" hm-read-more hm-text="{[{result.description}]}" hm-limit="173"
+                               hm-more-text="Read more" hm-less-text="Read less" hm-dots-class="readmore-dots-class" hm-link-class="readmore-link-class"
+                            />
+                        </span>
+                        <br/>
                     </div>
                 </div>
             </td>
