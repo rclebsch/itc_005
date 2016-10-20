@@ -1,5 +1,6 @@
 <section id="contactsController" ng-controller="contactsContentCtrl">
-    Registered {[{members}]} contacts
+    Registered {[{members}]} contacts <br/>
+     <span class="table-filter">Showing {[{currentFilter}]}</span><input type="button" value="Reset Filters" ng-show="currentFilter != 'All'" ng-click="resetFilters()" class="register reset-filter"/>
     <table ng-table="contactsTable" show-filter="true" class="table table-condensed table-bordered table-striped">
   	    <tr ng-repeat="contact in data">
             <td data-title="'Category'" sortable="'contactCategory'" filter="{ 'contactCategory': 'type-ahead' }" filter-data="categories">{[{contact.contactCategory}]}</td>

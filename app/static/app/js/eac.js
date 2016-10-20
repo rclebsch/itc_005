@@ -155,17 +155,22 @@ function eventsContentCtrl ($scope, $http, $filter, NgTableParams) {
     $scope.total = 0;
     $scope.menuStructure = {
         id:'section-events',
-        hasSubItems: true,
+        hasSubItems: false,
         title: 'Events in EAC',
         extendedTitle: 'Events: training and participation to Trade Fairs'};
+    $scope.currentFilter = 'All';
     $scope.eventsTable = new NgTableParams({
                 page: 1,
                 count: 10
             }, {
                 total: 1,  // value less than count hide pagination
                 getData: function (params) {
-                    var filteredData = params.sorting() ? $filter('orderBy')($scope.events, params.orderBy()) : $scope.events;
-                    var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
+                    var filters = params.filter();
+                    if (!angular.equals(filters, {}) && ($scope.currentFilter == 'All')) {
+                        $scope.currentFilter = "Filtered";
+                    }
+                    var filteredData = !angular.equals(filters, {}) ? $filter('filter')($scope.events, filters) : $scope.events;
+                    var sortedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
                     return $scope.data;
@@ -177,6 +182,11 @@ function eventsContentCtrl ($scope, $http, $filter, NgTableParams) {
             $scope.init();
         }
     });
+
+    $scope.resetFilters = function() {
+        $scope.eventsTable.filter({});
+        $scope.currentFilter = 'All';
+    };
 
     $scope.buildFilters = function(result) {
         var datesHash = [];
@@ -257,7 +267,11 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
             }, {
                 total: 1,  // value less than count hide pagination
                 getData: function (params) {
-                    var filteredData = params.filter() ? $filter('filter')($scope.contacts, params.filter()) : $scope.contacts;
+                    var filters = params.filter();
+                    if (!angular.equals(filters, {}) && ($scope.currentFilter == 'All')) {
+                        $scope.currentFilter = "Filtered";
+                    }
+                    var filteredData = !angular.equals(filters, {}) ? $filter('filter')($scope.contacts, filters) : $scope.contacts;
                     var sortedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
@@ -273,10 +287,15 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
 
     $scope.$on('filter', function(event, data) {
         if(data.section == 'section-edirectory') {
-            angular.extend($scope.directoryTable.filter(), {contactCategory:data.filter});
+            angular.extend($scope.directoryTable.filter(),(data.filter) ? {contactCategory:data.filter}:{});
             $scope.currentFilter = (data.filter == '') ? 'All': data.filter;
         }
     });
+
+    $scope.resetFilters = function() {
+        $scope.directoryTable.filter({});
+        $scope.currentFilter = 'All';
+    };
 
     $scope.$on('incBusinessContacts', function(event, data) {
         $scope.businessContactsTotal += data;
@@ -380,6 +399,7 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
         hasSubItems: true,
         title: 'EAC Business Contacts',
         extendedTitle: 'Contacts: Trade Support Institutions, Women Associations, Trade Hubs, and Border Agencies in EAC'};
+    $scope.currentFilter = 'All';
     $scope.contactsTable = new NgTableParams({
                 page: 1,
                 count: 100
@@ -387,8 +407,12 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
                 total: 1,  // value less than count hide pagination
                 //total: $scope.events.length,
                 getData: function (params) {
-                    var filteredData = params.sorting() ? $filter('orderBy')($scope.contacts, params.orderBy()) : $scope.contacts;
-                    var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
+                    var filters = params.filter();
+                    if (!angular.equals(filters, {}) && ($scope.currentFilter == 'All')) {
+                        $scope.currentFilter = "Filtered";
+                    }
+                    var filteredData = !angular.equals(filters, {}) ? $filter('filter')($scope.contacts, filters) : $scope.contacts;
+                    var sortedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
                     return $scope.data;
@@ -403,9 +427,15 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
 
     $scope.$on('filter', function(event, data) {
         if(data.section == 'section-contacts') {
-            angular.extend($scope.contactsTable.filter(), {contactCategory:data.filter});
+            angular.extend($scope.contactsTable.filter(),(data.filter) ? {contactCategory:data.filter}:{});
+            $scope.currentFilter = (data.filter == '') ? 'All': data.filter;
         }
     });
+
+    $scope.resetFilters = function() {
+        $scope.contactsTable.filter({});
+        $scope.currentFilter = 'All';
+    };
 
 	$scope.buildFilters = function(result) {
         var countriesHash = [];
@@ -435,6 +465,7 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
 
 	$scope.buildSubMenus = function() {
 		var subItems = [];
+        subItems.push({title:'All', filter:''});
 		$scope.categories.forEach(function(category){
             subItems.push({title:category.id, filter:category.id});
         });
@@ -586,6 +617,7 @@ function resourcesContentCtrl ($scope, $http, $filter, NgTableParams) {
     $scope.categories = [];
     $scope.languages = [];
     $scope.total = 0;
+    $scope.currentFilter = 'All';
     $scope.resourcesTable = new NgTableParams({
                 page: 1,
                 count: 10
@@ -593,8 +625,12 @@ function resourcesContentCtrl ($scope, $http, $filter, NgTableParams) {
                 total: 1,  // value less than count hide pagination
                 //total: $scope.events.length,
                 getData: function (params) {
-                    var filteredData = params.sorting() ? $filter('orderBy')($scope.resources, params.orderBy()) : $scope.resources;
-                    var sortedData = params.filter() ? $filter('filter')(filteredData, params.filter()) : filteredData;
+                    var filters = params.filter();
+                    if (!angular.equals(filters, {}) && ($scope.currentFilter == 'All')) {
+                        $scope.currentFilter = "Filtered";
+                    }
+                    var filteredData = !angular.equals(filters, {}) ? $filter('filter')($scope.resources, filters) : $scope.resources;
+                    var sortedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
                     $scope.data = sortedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
                     params.total(sortedData.length);
                     return $scope.data;
@@ -609,9 +645,15 @@ function resourcesContentCtrl ($scope, $http, $filter, NgTableParams) {
 
     $scope.$on('filter', function(event, data) {
         if(data.section == 'section-resources') {
-            angular.extend($scope.resourcesTable.filter(), {resourceCategory:data.filter});
+            angular.extend($scope.resourcesTable.filter(),(data.filter) ? {resourceCategory:data.filter}:{});
+            $scope.currentFilter = (data.filter == '') ? 'All': data.filter;
         }
     });
+
+    $scope.resetFilters = function() {
+        $scope.resourcesTable.filter({});
+        $scope.currentFilter = 'All';
+    };
 
 	$scope.buildFilters = function(result) {
         var languagesHash = [];
@@ -635,6 +677,7 @@ function resourcesContentCtrl ($scope, $http, $filter, NgTableParams) {
 
     $scope.buildSubMenus = function() {
 		var subItems = [];
+        subItems.push({title:'All', filter:''});
 		$scope.categories.forEach(function(category){
             subItems.push({title:category.id, filter:category.id});
         });

@@ -9,7 +9,7 @@
     </p>
     <input type="button" value="REGISTER to the EAC Women E-Directory" class="register" ng-click="openRegister()"/><br/>
     <span>Registered: <b>{[{members}]}</b> members - Total Business Contacts <b>{[{businessContactsTotal}]}</b><span><br/>
-    <span class="table-filter">Showing {[{currentFilter}]}</span>
+    <span class="table-filter">Showing {[{currentFilter}]}</span><input type="button" value="Reset Filters" ng-show="currentFilter != 'All'" ng-click="resetFilters()" class="register reset-filter"/>
     <table ng-table="directoryTable" show-filter="true" class="table table-condensed table-bordered table-striped">
         <tr ng-repeat="contact in data">
             <td data-title="'Last Name'" sortable="'lastName'" filter="{ 'lastName': 'text' }">{[{contact.lastName}]}</td>

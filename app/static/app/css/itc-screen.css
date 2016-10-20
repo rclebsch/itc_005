@@ -2847,4 +2847,10 @@ img.pubsCover {
 	margin-right:5px;
 }
 
+.reset-filter {
+	margin-left: 10px;
+    font-size: 12px;
+    padding: 3px;
+}
+
 /* End EAC*/
