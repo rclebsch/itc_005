@@ -250,7 +250,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
     $scope.currentFilter = 'All';
     $scope.directoryTable = new NgTableParams({
                 page: 1,
-                count: 10,
+                count: 100,
             }, {
                 total: 1,  // value less than count hide pagination
                 getData: function (params) {
@@ -378,7 +378,7 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
         extendedTitle: 'Contacts: Trade Support Institutions, Women Associations, Trade Hubs, and Border Agencies in EAC'};
     $scope.contactsTable = new NgTableParams({
                 page: 1,
-                count: 10
+                count: 100
             }, {
                 total: 1,  // value less than count hide pagination
                 //total: $scope.events.length,
