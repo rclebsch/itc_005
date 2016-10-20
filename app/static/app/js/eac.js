@@ -114,6 +114,7 @@ function theProjectContentCtrl ($scope) {
 	$scope.initialized = false;
     $scope.menuStructure = {
         id:'section-the-project',
+        hasSubItems: true,
         title: 'About the project',
         extendedTitle: 'Trade facilitation support for women cross-border traders and MSMEs in East African Community (EAC)',
         subItems:[
@@ -154,6 +155,7 @@ function eventsContentCtrl ($scope, $http, $filter, NgTableParams) {
     $scope.total = 0;
     $scope.menuStructure = {
         id:'section-events',
+        hasSubItems: true,
         title: 'Events in EAC',
         extendedTitle: 'Events: training and participation to Trade Fairs'};
     $scope.eventsTable = new NgTableParams({
@@ -238,6 +240,7 @@ function eDirectoryContentCtrl ($scope, $http, $filter, NgTableParams, ngDialog)
     $scope.data = [];
     $scope.menuStructure = {
         id:'section-edirectory',
+        hasSubItems: true,
         title: 'The Women EAC Trade & Logistics Network',
         extendedTitle: 'The E-Directory of Women owned firms & Logistic Service Providers (LSPs) in EAC'};
     $scope.countries = [];
@@ -374,6 +377,7 @@ function contactsContentCtrl ($scope, $http, $filter, NgTableParams) {
     $scope.members = 0;
     $scope.menuStructure = {
         id:'section-contacts',
+        hasSubItems: true,
         title: 'EAC Business Contacts',
         extendedTitle: 'Contacts: Trade Support Institutions, Women Associations, Trade Hubs, and Border Agencies in EAC'};
     $scope.contactsTable = new NgTableParams({
@@ -472,6 +476,7 @@ function searchContentCtrl ($scope, $http, $filter, NgTableParams) {
     $scope.resultsSummary = 'Search results';
     $scope.menuStructure = {
         id:'section-search',
+        hasSubItems: false,
         title: 'Search',
         extendedTitle: '',
     };
@@ -575,6 +580,7 @@ function resourcesContentCtrl ($scope, $http, $filter, NgTableParams) {
     $scope.data = [];
     $scope.menuStructure = {
         id:'section-resources',
+        hasSubItems: true,
         title: 'Publications, Resources and downloads',
         extendedTitle: 'Resources: Agricultural Model Contracts, Tools and training materials'};
     $scope.categories = [];
